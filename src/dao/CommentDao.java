@@ -90,9 +90,11 @@ public class CommentDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlUpdate = "UPDATE comment SET content=" + "'" + content + "'" + ", todate=NOW() WHERE id=" + idx;
+            String sqlUpdate = "UPDATE comment SET content=? , todate=NOW() WHERE id=?";
             System.out.println(sqlUpdate);
             pstm = conn.prepareStatement(sqlUpdate);
+            pstm.setString(1, content);
+            pstm.setInt(2, idx);
             pstm.executeUpdate(sqlUpdate);
         } catch (SQLException e) {
             System.out.println(e);
@@ -111,9 +113,11 @@ public class CommentDao {
         Connection conn = dbconnect.connDb();
         int id = 0;
         try {
-            String sqlSelect = "SELECT id from comment where content=" + "'" + content + "'" + " and parent=" + parent;
+            String sqlSelect = "SELECT id from comment where content=? and parent=?";
             pstm = conn.prepareStatement(sqlSelect);
-            rs = pstm.executeQuery(sqlSelect);
+            pstm.setString(1, content);
+            pstm.setInt(2, parent);
+            rs = pstm.executeQuery();
             if (rs.next()) {
                 id = rs.getInt(1); // select문 count 값
             }
@@ -158,10 +162,11 @@ public class CommentDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlDelete = "DELETE FROM comment WHERE id=" + idx;
+            String sqlDelete = "DELETE FROM comment WHERE id=?";
             System.out.println(sqlDelete);
             pstm = conn.prepareStatement(sqlDelete);
-            pstm.executeUpdate();
+            pstm.setInt(1, idx);
+            pstm.executeUpdate(sqlDelete);
 
         } catch (SQLException e) {
             System.out.println(e);

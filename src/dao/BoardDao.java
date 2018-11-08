@@ -52,9 +52,10 @@ public class BoardDao {
         Connection conn = dbconnect.connDb();
         String password = "";
         try {
-            String sqlPasswd = "SELECT passwd FROM board WHERE id=" + idx;
+            String sqlPasswd = "SELECT passwd FROM board WHERE id=?";
             pstm = conn.prepareStatement(sqlPasswd);
-            rs = pstm.executeQuery(sqlPasswd);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
 
             if (rs.next()) {
                 password = rs.getString(1);
@@ -139,8 +140,11 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlUpdate = "UPDATE board SET title='" + title + "' ,content='" + content + "' WHERE id=" + idx;
+            String sqlUpdate = "UPDATE board SET title=? ,content=? WHERE id=?";
             pstm = conn.prepareStatement(sqlUpdate);
+            pstm.setString(1, title);
+            pstm.setString(2, content);
+            pstm.setInt(3, idx);
             pstm.executeUpdate(sqlUpdate);
         } catch (SQLException e) {
             System.out.println(e);
