@@ -7,8 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import vo.BoardVo;
+import vo.PagingVo;
 
 public class BoardDao {
 
@@ -74,7 +77,7 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlDelete = "DELETE FROM board WHERE id=" + idx;
+            String sqlDelete = "DELETE FROM board WHERE id=?";
             System.out.println(sqlDelete);
             pstm = conn.prepareStatement(sqlDelete);
             pstm.executeUpdate();
@@ -86,36 +89,44 @@ public class BoardDao {
         }
     }
 
+
+
     /**
      * 게시판 글 리스트를 읽어드리기 위한 메소드
      */
-    public ArrayList<BoardVo> sqlList() {
+    public ArrayList<BoardVo> sqlBoardList() {
+
         PreparedStatement pstm = null;
         ResultSet rs = null;
         Connection conn = dbconnect.connDb();
 
         ArrayList<BoardVo> boardList = new ArrayList<BoardVo>();
-        try {
 
-            String sqlList = "SELECT id, author, title, todate from board order by id DESC";
+        try {
+            String sqlList = "SELECT id, author, title, todate, indent from board order by parent DESC, step ASC";
             pstm = conn.prepareStatement(sqlList);
+            System.out.println("sqlList : " + sqlList);
             rs = pstm.executeQuery();
 
-            while (rs.next()) {
+            while(rs.next()) {
                 BoardVo boardVo = new BoardVo();
                 boardVo.setId(rs.getInt(1));
                 boardVo.setAuthor(rs.getString(2));
                 boardVo.setTitle(rs.getString(3));
                 boardVo.setTodate(rs.getDate(4));
+                boardVo.setIndent(rs.getInt(5));
 
                 boardList.add(boardVo);
             }
+
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
             dbconnect.close(pstm, conn);
             dbconnect.resultClose(rs);
-        } return boardList;
+        }
+        return boardList;
+
     }
 
     /**
@@ -167,6 +178,7 @@ public class BoardDao {
         }
     }
 
+
     public void sqlReplyInsert(BoardVo boardVo, String kindType, int parentInsert, int indentInsert, int stepInsert) {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
@@ -193,5 +205,53 @@ public class BoardDao {
         } finally {
             dbconnect.close(pstm, conn);
         }
+    }
+
+    /**
+     * 삭제된 Post 값 상태를 변경하기 위한 메소드
+     */
+    public void sqlPostDelete(int idx) {
+        PreparedStatement pstm = null;
+        Connection conn = dbconnect.connDb();
+        try {
+            String sqlUpdate = "UPDATE board SET status='deleted' WHERE id=?";
+            pstm = conn.prepareStatement(sqlUpdate);
+            pstm.setInt(1, idx);
+            pstm.executeUpdate(sqlUpdate);
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+        }
+    }
+
+    /**
+     * 삭제된 글을 읽어드리기 위한 메소드
+     * @param idx
+     * @return
+     */
+    public String sqlPostStatusSelect(int idx) {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+        String statusSelect = "";
+        try {
+            String sqlSelect = "SELECT status FROM board WHERE id=?";
+            pstm = conn.prepareStatement(sqlSelect);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                BoardVo boardVo = new BoardVo();
+                boardVo.setStatus(rs.getString(1));
+                statusSelect = boardVo.getStatus();
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return statusSelect;
     }
 }

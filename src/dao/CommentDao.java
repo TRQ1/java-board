@@ -22,12 +22,13 @@ public class CommentDao {
         Connection conn = dbconnect.connDb();
         int total = 0;
         try {
-            String sqlCount = "SELECT COUNT(*) FROM comment where parent=" + idx;
+            String sqlCount = "SELECT COUNT(*) FROM comment where parent=?";
             pstm = conn.prepareStatement(sqlCount);
+            pstm.setInt(1, idx);
             rs = pstm.executeQuery(sqlCount);
 
             if (rs.next()) {
-                total = rs.getInt(1); // select문 count 값
+                total = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e);

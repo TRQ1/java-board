@@ -47,4 +47,13 @@ public class CookieUtils {
         }
         return buffer.toString();
     }
+
+
+    public void checkId(HttpServletRequest request, String loginId) {
+
+        if (loginId == null || loginId.equals("null")) {
+            loginId = "null";
+        }
+
+    }
 }
