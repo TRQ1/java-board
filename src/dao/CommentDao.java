@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import utils.DBConnect;
 import vo.CommentVo;
@@ -58,6 +59,40 @@ public class CommentDao {
         } finally {
             dbconnect.close(pstm, conn);
         }
+    }
+    /**
+     *
+     */
+    public ArrayList<CommentVo> sqlBoardDetailList(int idx) {
+
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+
+        ArrayList<CommentVo> commentList = new ArrayList<CommentVo>();
+
+        try {
+            String sqlList = "SELECT author, content, todate from comment where parent=? ORDER BY id DESC";
+            pstm = conn.prepareStatement(sqlList);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
+
+            while(rs.next()) {
+                CommentVo commentVo = new CommentVo();
+                commentVo.setAuthor(rs.getString(1));
+                commentVo.setContent(rs.getString(2));
+                commentVo.setTodate(rs.getDate(3));
+                commentList.add(commentVo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return commentList;
+
     }
 
     /**

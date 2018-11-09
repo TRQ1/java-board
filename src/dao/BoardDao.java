@@ -178,6 +178,44 @@ public class BoardDao {
     }
 
     /**
+     *  상세 게시판 리스트  쿼리
+     * @return
+     */
+    public ArrayList<BoardVo> sqlBoardDetailList(int idx) {
+
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+
+        ArrayList<BoardVo> boardDetailList = new ArrayList<BoardVo>();
+
+        try {
+            String sqlList = "SELECT id, author, title, todate, from board where id = ?";
+            pstm = conn.prepareStatement(sqlList);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
+
+            while(rs.next()) {
+                BoardVo boardVo = new BoardVo();
+                boardVo.setId(rs.getInt(1));
+                boardVo.setAuthor(rs.getString(2));
+                boardVo.setTitle(rs.getString(3));
+                boardVo.setTodate(rs.getDate(4));
+
+                boardDetailList.add(boardVo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return boardDetailList;
+
+    }
+
+    /**
      *
      * @param title
      * @param content
