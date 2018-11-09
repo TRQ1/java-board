@@ -7,8 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 
 import vo.BoardVo;
 import vo.PagingVo;
@@ -205,7 +204,13 @@ public class BoardDao {
      *
      * 게시판 글을 쓰기 위한 메소드
      */
-    public void sqlInsert(BoardVo boardVo, String kindType, int parentInsert) {
+    public void sqlInsert(HttpServletRequest request, String kindType, int parentInsert) {
+
+        BoardVo boardVo = new BoardVo();
+        boardVo.setAuthor(request.getParameter("author"));
+        boardVo.setPassword(request.getParameter("password"));
+        boardVo.setTitle(request.getParameter("title"));
+        boardVo.setContent(request.getParameter("content"));
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {

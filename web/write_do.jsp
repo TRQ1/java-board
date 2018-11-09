@@ -10,47 +10,34 @@
 <%@ page import="utils.CookieUtils"%>
 <%@ page import="utils.DBConnect" %>
 <%@ page import="dao.BoardDao" %>
-<jsp:useBean id="boardVo" class="vo.BoardVo" />
-<jsp:setProperty name="boardVo" property="*" />
 <%
     request.setCharacterEncoding("UTF-8");
 
     CookieUtils cookieUtils = new CookieUtils();
     String loginId = cookieUtils.checkLogin(request, "loginId");
-
     BoardDao boardDao = new BoardDao();
-
-    int count = 0;
-    int countAfter = 0;
-    int max = 0;
 
     int id = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
     String userId = loginId;
-    String author = null;
-    String password = null;
-    String title = null;
-    String content = null;
-
-    author = request.getParameter("author");
-    password = request.getParameter("password");
-    title = request.getParameter("title");
-    content = request.getParameter("content");
-
-
 
     /**
      * 회원 로그인시 작성자와 패스워드를 안받기때문에 처리 해주는 로직
      */
+    String author = null;
+    String password = null;
+
+    author = request.getParameter("author");
+    password = request.getParameter("password");
     if (author == null && password == null) {
         author = userId;
         password = boardDao.sqlGetPasswd(userId);
     }
 
-    max = boardDao.sqlBoardMax();
-    count = boardDao.sqlCount();
-    boardDao.sqlInsert(boardVo, "post", max);
-    countAfter = boardDao.sqlCount();
+    int max = boardDao.sqlBoardMax();
+    int count = boardDao.sqlCount();
+    boardDao.sqlInsert(request, "post", max);
+    int countAfter = boardDao.sqlCount();
 
     if (count + 1 == countAfter) {
 %>
