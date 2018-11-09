@@ -91,33 +91,6 @@ public class BoardDao {
     }
 
     /**
-     * 계정에 대한 패스워드 확인하는 메소드
-     */
-    public String sqlGetPasswd(String userId) {
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        Connection conn = dbconnect.connDb();
-        String password = "";
-        try {
-            String sqlPasswd = "SELECT userpasswd FROM account WHERE userid=?";
-            pstm = conn.prepareStatement(sqlPasswd);
-            pstm.setString(1, userId);
-            rs = pstm.executeQuery(sqlPasswd);
-
-            if (rs.next()) {
-                password = rs.getString(1);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        } finally {
-            dbconnect.close(pstm, conn);
-            dbconnect.resultClose(rs);
-        }
-        return password;
-    }
-
-
-    /**
      * 게시판 삭제
      * @param idx
      */
@@ -137,6 +110,29 @@ public class BoardDao {
         }
     }
 
+    public String sqlTitleSelect(int idx) {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+        String title = null;
+
+        try {
+            String sqlTitle = "SELECT title FROM board WHERE id=?";
+            pstm = conn.prepareStatement(sqlTitle);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                title = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return title;
+    }
 
 
     /**
@@ -178,7 +174,7 @@ public class BoardDao {
     }
 
     /**
-     *  상세 게시판 리스트  쿼리
+     *  상세 게시판 리스트 쿼리
      * @return
      */
     public ArrayList<BoardVo> sqlBoardDetailList(int idx) {

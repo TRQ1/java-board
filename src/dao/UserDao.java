@@ -40,4 +40,30 @@ public class UserDao {
             dbConnect.resultClose(rs);
         } return userList;
     }
+
+    /**
+     * 계정에 대한 패스워드 확인하는 메소드
+     */
+    public String sqlGetPasswd(String userId) {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbConnect.connDb();
+        String password = "";
+        try {
+            String sqlPasswd = "SELECT userpasswd FROM account WHERE userid=?";
+            pstm = conn.prepareStatement(sqlPasswd);
+            pstm.setString(1, userId);
+            rs = pstm.executeQuery(sqlPasswd);
+
+            if (rs.next()) {
+                password = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbConnect.close(pstm, conn);
+            dbConnect.resultClose(rs);
+        }
+        return password;
+    }
 }
