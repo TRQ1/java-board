@@ -43,6 +43,28 @@ public class BoardDao {
         return total;
     }
 
+    public int sqlBoardMax() {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+        int max = 0;
+        try {
+            String sqlCount = "SELECT MAX(id) FROM board";
+            pstm = conn.prepareStatement(sqlCount);
+            rs = pstm.executeQuery(sqlCount);
+
+            if (rs.next()) {
+                max = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return max;
+    }
+
     /**
      * 게시판 글 패스워드를 확인 하기위한 메소드
      */
@@ -52,10 +74,36 @@ public class BoardDao {
         Connection conn = dbconnect.connDb();
         String password = "";
         try {
-            String sqlPasswd = "SELECT passwd FROM board WHERE id=?";
+            String sqlPasswd = "SELECT passwd FROM board WHERE id = ?";
             pstm = conn.prepareStatement(sqlPasswd);
             pstm.setInt(1, idx);
             rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                password = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return password;
+    }
+
+    /**
+     * 계정에 대한 패스워드 확인하는 메소드
+     */
+    public String sqlGetPasswd(String userId) {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+        String password = "";
+        try {
+            String sqlPasswd = "SELECT userpasswd FROM account WHERE userid=?";
+            pstm = conn.prepareStatement(sqlPasswd);
+            pstm.setString(1, userId);
+            rs = pstm.executeQuery(sqlPasswd);
 
             if (rs.next()) {
                 password = rs.getString(1);
@@ -78,7 +126,7 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlDelete = "DELETE FROM board WHERE id=?";
+            String sqlDelete = "DELETE FROM board WHERE id = ?";
             System.out.println(sqlDelete);
             pstm = conn.prepareStatement(sqlDelete);
             pstm.executeUpdate();
@@ -140,7 +188,7 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlUpdate = "UPDATE board SET title=? ,content=? WHERE id=?";
+            String sqlUpdate = "UPDATE board SET title = ? ,content = ? WHERE id = ?";
             pstm = conn.prepareStatement(sqlUpdate);
             pstm.setString(1, title);
             pstm.setString(2, content);
@@ -218,7 +266,7 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlUpdate = "UPDATE board SET status='deleted' WHERE id=?";
+            String sqlUpdate = "UPDATE board SET status='deleted' WHERE id = ?";
             pstm = conn.prepareStatement(sqlUpdate);
             pstm.setInt(1, idx);
             pstm.executeUpdate(sqlUpdate);
@@ -240,7 +288,7 @@ public class BoardDao {
         Connection conn = dbconnect.connDb();
         String statusSelect = "";
         try {
-            String sqlSelect = "SELECT status FROM board WHERE id=?";
+            String sqlSelect = "SELECT status FROM board WHERE id = ?";
             pstm = conn.prepareStatement(sqlSelect);
             pstm.setInt(1, idx);
             rs = pstm.executeQuery();
