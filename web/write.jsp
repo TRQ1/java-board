@@ -61,7 +61,7 @@ function writeCheck()
 </head>
 <body>
 <table>
-    <form name=writeform method=post action="write_do.jsp?id=<%=idx%>&pg=<%=pg%>">
+    <form name=writeform method=post action="write_do.jsp?id=<%=idx%>&pg=<%=pg%>&author=<%=userId%>">
     <tr>
         <td>
             <table width="100%" cellpadding="0" cellspacing="0" border="0">

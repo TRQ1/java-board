@@ -10,12 +10,14 @@
 <%@ page import="utils.CookieUtils"%>
 <%@ page import="utils.DBConnect" %>
 <%@ page import="dao.BoardDao" %>
+<%@ page import="dao.UserDao" %>
 <%
     request.setCharacterEncoding("UTF-8");
 
     CookieUtils cookieUtils = new CookieUtils();
     String loginId = cookieUtils.checkLogin(request, "loginId");
     BoardDao boardDao = new BoardDao();
+    UserDao userDao = new UserDao();
 
     int id = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
@@ -24,14 +26,12 @@
     /**
      * 회원 로그인시 작성자와 패스워드를 안받기때문에 처리 해주는 로직
      */
-    String author = null;
-    String password = null;
 
-    author = request.getParameter("author");
-    password = request.getParameter("password");
+    String author = request.getParameter("author");
+    String password = request.getParameter("password");
     if (author == null && password == null) {
         author = userId;
-        password = boardDao.sqlGetPasswd(userId);
+        password = userDao.sqlGetPasswd(userId);
     }
 
     int max = boardDao.sqlBoardMax();
