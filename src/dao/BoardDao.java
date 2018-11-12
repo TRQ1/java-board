@@ -28,7 +28,7 @@ public class BoardDao {
         try {
             String sqlCount = "SELECT COUNT(*) FROM board";
             pstm = conn.prepareStatement(sqlCount);
-            rs = pstm.executeQuery(sqlCount);
+            rs = pstm.executeQuery();
 
             if (rs.next()) {
                 total = rs.getInt(1);
@@ -50,7 +50,7 @@ public class BoardDao {
         try {
             String sqlCount = "SELECT MAX(id) FROM board";
             pstm = conn.prepareStatement(sqlCount);
-            rs = pstm.executeQuery(sqlCount);
+            rs = pstm.executeQuery();
 
             if (rs.next()) {
                 max = rs.getInt(1);
@@ -134,6 +134,39 @@ public class BoardDao {
         return title;
     }
 
+    public ArrayList<BoardVo> sqlModifyBoardList(int idx) {
+
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+
+        ArrayList<BoardVo> boardList = new ArrayList<BoardVo>();
+
+        try {
+            String sqlSelect = "SELECT author, title, content, passwd FROM board WHERE id=?";
+            pstm = conn.prepareStatement(sqlSelect);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                BoardVo boardVo = new BoardVo();
+                boardVo.setAuthor(rs.getString(1));
+                boardVo.setTitle(rs.getString(2));
+                boardVo.setContent(rs.getString(3));
+                boardVo.setPassword(rs.getString(4));
+
+                boardList.add(boardVo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return boardList;
+    }
+
 
     /**
      * 게시판 글 리스트를 읽어드리기 위한 메소드
@@ -191,7 +224,7 @@ public class BoardDao {
             pstm.setInt(1, idx);
             rs = pstm.executeQuery();
 
-            while(rs.next()) {
+            if(rs.next()) {
                 BoardVo boardVo = new BoardVo();
                 boardVo.setAuthor(rs.getString(1));
                 boardVo.setTitle(rs.getString(2));
@@ -212,20 +245,21 @@ public class BoardDao {
 
     /**
      *
-     * @param title
-     * @param content
      * 게시판 글 제목 및 내용을 수정하기위한 메소드
      */
-    public void sqlUpdate(String title, String content, int idx) {
+    public void sqlUpdate(HttpServletRequest request, int idx) {
+        BoardVo boardVo = new BoardVo();
+        boardVo.setTitle(request.getParameter("title"));
+        boardVo.setContent(request.getParameter("content"));
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlUpdate = "UPDATE board SET title = ? ,content = ? WHERE id = ?";
+            String sqlUpdate = "UPDATE board SET title=?, content=? WHERE id=?";
             pstm = conn.prepareStatement(sqlUpdate);
-            pstm.setString(1, title);
-            pstm.setString(2, content);
+            pstm.setString(1, boardVo.getTitle());
+            pstm.setString(2, boardVo.getContent());
             pstm.setInt(3, idx);
-            pstm.executeUpdate(sqlUpdate);
+            pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
