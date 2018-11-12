@@ -122,7 +122,7 @@
                         if (!userId.equals("null")) {
                 %>
                 <form name=writecommentcheckform method=post
-                      action="write_comment_do.jsp?id=<%=idx%>&pg=<%=pg%>">
+                      action="write_comment_do.jsp?id=<%=idx%>&pg=<%=pg%>&author=<%=userId%>">
                     <tr>
                         <td align="right" width="76">사용자:</td>
                         <td width="319" name="userId"><%=userId%>

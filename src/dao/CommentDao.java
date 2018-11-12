@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import utils.DBConnect;
 import vo.CommentVo;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class CommentDao {
 
     DBConnect dbconnect = new DBConnect();
@@ -43,7 +45,11 @@ public class CommentDao {
     /**
      * 회원이 댓글을 쓰기 위한 쿼리 매소드
      */
-    public void sqlInsertAcoountCommnet(CommentVo commentVo, int parentInsert) {
+    public void sqlInsertAccountCommnet(HttpServletRequest request, int parentInsert) {
+        CommentVo commentVo = new CommentVo();
+        commentVo.setAuthor(request.getParameter("author"));
+        commentVo.setContent(request.getParameter("contentComment"));
+        commentVo.setParent(parentInsert);
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
@@ -52,7 +58,7 @@ public class CommentDao {
             pstm = conn.prepareStatement(sqlInsert);
             pstm.setString(1, commentVo.getAuthor());
             pstm.setString(2, commentVo.getContent());
-            pstm.setInt(3, parentInsert);
+            pstm.setInt(3, commentVo.getParent());
             pstm.execute();
         } catch (SQLException e) {
             System.out.println(e);
@@ -99,7 +105,14 @@ public class CommentDao {
      * 방문자가 댓글을 쓰기 위한 쿼리 메소드
      */
 
-    public void sqlInsertVistorCommnet(CommentVo commentVo, int parentInsert) {
+    public void sqlInsertVistorCommnet(HttpServletRequest request, int parentInsert) {
+
+        CommentVo commentVo = new CommentVo();
+        commentVo.setAuthor(request.getParameter("authorComment"));
+        commentVo.setPasswd(request.getParameter("passwdComment"));
+        commentVo.setContent(request.getParameter("contentComment"));
+        commentVo.setParent(parentInsert);
+
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
@@ -109,7 +122,7 @@ public class CommentDao {
             pstm.setString(1, commentVo.getAuthor());
             pstm.setString(2, commentVo.getPasswd());
             pstm.setString(3, commentVo.getContent());
-            pstm.setInt(4, parentInsert);
+            pstm.setInt(4,commentVo.getParent());
             pstm.execute();
         } catch (SQLException e) {
             System.out.println(e);
