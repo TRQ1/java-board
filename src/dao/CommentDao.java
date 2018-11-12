@@ -26,7 +26,7 @@ public class CommentDao {
             String sqlCount = "SELECT COUNT(*) FROM comment where parent=?";
             pstm = conn.prepareStatement(sqlCount);
             pstm.setInt(1, idx);
-            rs = pstm.executeQuery(sqlCount);
+            rs = pstm.executeQuery();
 
             if (rs.next()) {
                 total = rs.getInt(1);

@@ -40,6 +40,7 @@
     int startPage = pagingVo.getStartPage();
     int pageSize = pagingVo.getPageSize();
     int countPage = pagingVo.getCountPage();
+    System.out.println("pg : " + pg);
     System.out.println("startPage: " + startPage);
     System.out.println("countPage: " + countPage);
     int end = pagingVo.getEnd();
@@ -154,6 +155,8 @@
     <tr>
         <td align="center">
             <%
+                System.out.println("pg2 : " + pg);
+                System.out.println("countPage : " + countPage);
                 if(pg > countPage) {
             %>
             [<a href="lists.jsp?pg=1">◀◀</a>]

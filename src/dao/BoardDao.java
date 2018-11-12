@@ -186,17 +186,16 @@ public class BoardDao {
         ArrayList<BoardVo> boardDetailList = new ArrayList<BoardVo>();
 
         try {
-            String sqlList = "SELECT id, author, title, todate, from board where id = ?";
+            String sqlList = "SELECT author, title, content from board where id=?";
             pstm = conn.prepareStatement(sqlList);
             pstm.setInt(1, idx);
             rs = pstm.executeQuery();
 
             while(rs.next()) {
                 BoardVo boardVo = new BoardVo();
-                boardVo.setId(rs.getInt(1));
-                boardVo.setAuthor(rs.getString(2));
-                boardVo.setTitle(rs.getString(3));
-                boardVo.setTodate(rs.getDate(4));
+                boardVo.setAuthor(rs.getString(1));
+                boardVo.setTitle(rs.getString(2));
+                boardVo.setContent(rs.getString(3));
 
                 boardDetailList.add(boardVo);
             }

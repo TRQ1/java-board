@@ -30,7 +30,8 @@
     String content = null;
 
     ArrayList<BoardVo> boardList = boardDao.sqlBoardDetailList(idx);
-    BoardVo boardVo = boardList.get(idx);
+    int size = boardList.size()-1;
+    BoardVo boardVo = boardList.get(size);
     author = boardVo.getAuthor();
     title = boardVo.getTitle();
     content = boardVo.getContent();
@@ -56,14 +57,14 @@
                 <tr>
                     <td width="0">&nbsp;</td>
                     <td align="center" width="76">글쓴이</td>
-                    <td width="319"><%=author%></td>
+                    <td width="319"><%=author %></td>
                     <td width="0">&nbsp;</td>
                 </tr>
                 <tr height="1" bgcolor="#dddddd"><td colspan="4" width="407"></td></tr>
                 <tr>
                     <td width="0">&nbsp;</td>
                     <td align="center" width="76">제목</td>
-                    <td width="319"><%=title%>
+                    <td width="319"><%=title %>
                     </td>
                     <td width="0">&nbsp;</td>
                 </tr>
@@ -173,7 +174,7 @@
                 }
                     ArrayList<CommentVo> commentList = commentDao.sqlBoardDetailList(idx);
 
-                    for(int i = 1; i <= commentTotal; i++) {
+                    for(int i = 0; i <= commentTotal - 1; i++) {
                         CommentVo commentVo = commentList.get(i);
                         String authorComment = commentVo.getAuthor();
                         String contentComment = commentVo.getContent();
