@@ -409,10 +409,10 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlUpdate = "UPDATE board SET status='deleted' WHERE id = ?";
+            String sqlUpdate = "UPDATE board SET author='', title='삭제된 글입니다', status='deleted' WHERE id = ?";
             pstm = conn.prepareStatement(sqlUpdate);
             pstm.setInt(1, idx);
-            pstm.executeUpdate(sqlUpdate);
+            pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
