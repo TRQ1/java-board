@@ -13,36 +13,28 @@
 <%
     request.setCharacterEncoding("UTF-8");
 
-    CookieUtils cookieUtils = new CookieUtils();
-    String loginId = cookieUtils.checkLogin(request, "loginId");
+//    CookieUtils cookieUtils = new CookieUtils();
+//    String loginId = cookieUtils.checkLogin(request, "loginId");
     BoardDao boardDao = new BoardDao();
-    UserDao userDao = new UserDao();
+//    UserDao userDao = new UserDao();
 
-    int id = Integer.parseInt(request.getParameter("id"));
+    /*int id = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
-    String userId = loginId;
+    String userId = loginId;*/
 
     /**
      * 회원 로그인시 작성자와 패스워드를 안받기때문에 처리 해주는 로직
      */
 
-    String author = request.getParameter("author");
+    /*String author = request.getParameter("author");
+    if (loginId != null) {
+        author = loginId;
+    }
     String password = request.getParameter("password");
     if (author == null && password == null) {
         author = userId;
-    }
+    }*/
 
-    int max = boardDao.sqlBoardMax();
-    int count = boardDao.sqlCount();
-    boardDao.sqlInsert(request, "post", max);
-    int countAfter = boardDao.sqlCount();
+    boardDao.sqlInsert(request, response, "post");
 
-    if (count + 1 == countAfter) {
-%>
-<script language=javascript>
-    self.window.alert("입력한 글을 저장하였습니다.");
-    location.href = "lists.jsp?id=<%=id%>&pg=<%=pg%>";
-</script>
-<%
-    }
 %>

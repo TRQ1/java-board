@@ -17,6 +17,7 @@ public class BoardVo {
     String type;
     String status;
     String use;
+    int commentCnt;
 
     public int getId() {
         return id;
@@ -128,5 +129,13 @@ public class BoardVo {
 
     public void setUse(String use) {
         this.use = use;
+    }
+
+    public int getCommentCnt() {
+        return commentCnt;
+    }
+
+    public void setCommentCnt(int commentCnt) {
+        this.commentCnt = commentCnt;
     }
 }

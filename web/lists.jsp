@@ -99,7 +99,8 @@
             String author = boardVo.getAuthor();
             Date todate = boardVo.getTodate();
 
-            int commentCount = commentDao.sqlCountComment(id);
+//            int commentCount = commentDao.sqlCountComment(id);
+            int commentCount = boardVo.getCommentCnt();
 
             String postStatus = boardDao.sqlPostStatusSelect(id);
     %>
