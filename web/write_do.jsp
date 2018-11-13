@@ -8,7 +8,6 @@
 <%@ page import="java.sql.*"%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ page import="utils.CookieUtils"%>
-<%@ page import="utils.DBConnect" %>
 <%@ page import="dao.BoardDao" %>
 <%@ page import="dao.UserDao" %>
 <%
@@ -31,7 +30,6 @@
     String password = request.getParameter("password");
     if (author == null && password == null) {
         author = userId;
-        password = userDao.sqlGetPasswd(userId);
     }
 
     int max = boardDao.sqlBoardMax();

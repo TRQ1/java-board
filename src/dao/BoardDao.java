@@ -203,7 +203,45 @@ public class BoardDao {
             dbconnect.resultClose(rs);
         }
         return boardList;
+    }
 
+    /**
+     * 데이터를 불러오기 위한 쿼리
+     */
+    public ArrayList<BoardVo> sqlGetList(int idx) {
+
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+
+        ArrayList<BoardVo> boardGetList = new ArrayList<BoardVo>();
+
+        try {
+            String sqlList = "SELECT author, title, passwd, content, todate, indent, parent, step from board where id=?";
+            pstm = conn.prepareStatement(sqlList);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
+
+            while(rs.next()) {
+                BoardVo boardVo = new BoardVo();
+                boardVo.setAuthor(rs.getString(1));
+                boardVo.setTitle(rs.getString(2));
+                boardVo.setPassword(rs.getString(3));
+                boardVo.setContent(rs.getString(4));
+                boardVo.setTodate(rs.getDate(5));
+                boardVo.setIndent(rs.getInt(6));
+                boardVo.setParent(rs.getInt(7));
+                boardVo.setStep(rs.getInt(8));
+                boardGetList.add(boardVo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return boardGetList;
     }
 
     /**
@@ -274,7 +312,10 @@ public class BoardDao {
     public void sqlInsert(HttpServletRequest request, String kindType, int parentInsert) {
 
         BoardVo boardVo = new BoardVo();
-        boardVo.setAuthor(request.getParameter("author"));
+        if(request.getParameter("author") != null ) {
+            boardVo.setAuthor(request.getParameter("author"));
+        }
+
         boardVo.setPassword(request.getParameter("password"));
         boardVo.setTitle(request.getParameter("title"));
         boardVo.setContent(request.getParameter("content"));
@@ -302,8 +343,38 @@ public class BoardDao {
         }
     }
 
+    public void sqlReplySortUpdate(int parent, int step) {
+        Connection conn = dbconnect.connDb();
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
 
-    public void sqlReplyInsert(BoardVo boardVo, String kindType, int parentInsert, int indentInsert, int stepInsert) {
+        try {
+            String sqlUpdate = "UPDATE board SET step=? where parent=? and step > ?";
+            pstm = conn.prepareStatement(sqlUpdate);
+            pstm.setInt(1, step+1);
+            pstm.setInt(2, parent);
+            pstm.setInt(3, step);
+            pstm.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+        }
+
+    }
+
+
+    /**
+     * 답글 달기
+     */
+    public void sqlReplyInsert(HttpServletRequest request, String kindType, int parentInsert, int indentInsert, int stepInsert) {
+        BoardVo boardVo = new BoardVo();
+        boardVo.setAuthor(request.getParameter("author"));
+        boardVo.setPassword(request.getParameter("password"));
+        boardVo.setTitle(request.getParameter("title"));
+        boardVo.setContent(request.getParameter("content"));
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {

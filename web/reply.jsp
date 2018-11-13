@@ -7,9 +7,7 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="utils.CookieUtils"%>
-<%@ page import="vo.BoardVo" %>
 <%@ page import="dao.BoardDao" %>
-<%@ page import="java.util.ArrayList" %>
 <%
 
     BoardDao boardDao = new BoardDao();
@@ -29,7 +27,17 @@
 </head>
 <body>
 <table>
+    <%
+        if(userId.equals("null")) {
+    %>
     <form name=replyform method=post action="reply_do.jsp?id=<%=idx%>">
+    <%
+        } else {
+    %>
+    <form name=replyform method=post action="reply_do.jsp?id=<%=idx%>&author=<%=userId%>">
+    <%
+        }
+    %>
         <tr>
             <td>
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
