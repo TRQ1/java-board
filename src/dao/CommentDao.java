@@ -134,16 +134,17 @@ public class CommentDao {
     /**
      * Comment를 수정하기위한 메소드
      */
-    public void sqlCommentUpdate(String content, int idx) {
+    public void sqlCommentUpdate(HttpServletRequest request, int idx) {
+        CommentVo commentVo = new CommentVo();
+        commentVo.setContent(request.getParameter("contentComment"));
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
             String sqlUpdate = "UPDATE comment SET content=? , todate=NOW() WHERE id=?";
-            System.out.println(sqlUpdate);
             pstm = conn.prepareStatement(sqlUpdate);
-            pstm.setString(1, content);
+            pstm.setString(1, commentVo.getContent());
             pstm.setInt(2, idx);
-            pstm.executeUpdate(sqlUpdate);
+            pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
@@ -167,7 +168,7 @@ public class CommentDao {
             pstm.setInt(2, parent);
             rs = pstm.executeQuery();
             if (rs.next()) {
-                id = rs.getInt(1); // select문 count 값
+                id = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -187,9 +188,10 @@ public class CommentDao {
         Connection conn = dbconnect.connDb();
         String password = "";
         try {
-            String sqlPasswd = "SELECT passwd FROM comment WHERE id=" + idx;
+            String sqlPasswd = "SELECT passwd FROM comment WHERE id=?";
             pstm = conn.prepareStatement(sqlPasswd);
-            rs = pstm.executeQuery(sqlPasswd);
+            pstm.setInt(1, idx);
+            rs = pstm.executeQuery();
 
             if (rs.next()) {
                 password = rs.getString(1);
@@ -214,7 +216,7 @@ public class CommentDao {
             System.out.println(sqlDelete);
             pstm = conn.prepareStatement(sqlDelete);
             pstm.setInt(1, idx);
-            pstm.executeUpdate(sqlDelete);
+            pstm.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e);
