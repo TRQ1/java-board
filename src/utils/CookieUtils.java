@@ -17,9 +17,11 @@ public class CookieUtils {
     public String checkLogin(HttpServletRequest request, String userId) {
         String cookieUser = null;
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(userId)) {
-                cookieUser = cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(userId)) {
+                    cookieUser = cookie.getValue();
+                }
             }
         }
         return cookieUser;

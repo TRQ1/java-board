@@ -13,8 +13,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="dao.CommentDao" %>
 <%@ page import="vo.CommentVo" %>
+<%@include file="include/common.jsp"%>
 <%
-    request.setCharacterEncoding("UTF-8");
 
     BoardDao boardDao = new BoardDao();
     CommentDao commentDao = new CommentDao();
@@ -86,7 +86,7 @@
                     <td width="0">&nbsp;</td>
                     <td colspan="2" width="399">
                             <%
-                           if(userId.equals(author)) {
+                           if(userId != null && userId.equals(author)) {
                         %>
                         <input type=button value="수정" name=id
                                OnClick="window.location='modify.jsp?id=<%=idx%>&pg=<%=pg%>'">
@@ -95,7 +95,7 @@
                         <input type=button value="목록"
                                OnClick="window.location='lists.jsp?pg=<%=pg%>'">
                             <%
-                         } else if(!userId.equals(author) && userId != null && !userId.equals("null")) {
+                         } else if(userId != null && !userId.equals("null") && !userId.equals(author)) {
                         %>
                         <input type=button value="답글" name=id
                                OnClick="window.location='reply.jsp?id=<%=idx%>&pg=<%=pg%>'">
@@ -119,7 +119,7 @@
             <table>
                 <%
                         int commentTotal = commentDao.sqlCountComment(idx);
-                        if (!userId.equals("null")) {
+                        if (userId != null && !userId.equals("null")) {
                 %>
                 <form name=writecommentcheckform method=post
                       action="write_comment_do.jsp?id=<%=idx%>&pg=<%=pg%>&author=<%=userId%>">
@@ -188,7 +188,7 @@
                     <td align="right"><%=todateComment%>
                     </td>
                     <%
-                        if (userId.equals("null") || userId == null) {
+                        if (userId == null || userId.equals("null")) {
                     %>
                     <td align="right">
                         <input type=button value="댓글 수정"
@@ -200,7 +200,7 @@
 
                     </td>
                     <%
-                    } else if (userId.equals(authorComment)) {
+                    } else if (userId != null && userId.equals(authorComment)) {
                     %>
                     <td align="right">
                         <input type=button value="댓글 수정"
