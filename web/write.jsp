@@ -48,7 +48,7 @@ function writeCheck()
     request.setCharacterEncoding("UTF-8");
 
     CookieUtils cookieUtils = new CookieUtils();
-    String loginId = cookieUtils.checkLogin(request, "loginId");
+    String loginId = new CookieUtils().checkLogin(request, "loginId");
 
     int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
@@ -61,17 +61,7 @@ function writeCheck()
 </head>
 <body>
 <table>
-    <%
-        if(userId.equals("null")) {
-    %>
     <form name=writeform method=post action="write_do.jsp?id=<%=idx%>&pg=<%=pg%>">
-    <%
-        } else {
-    %>
-    <form name=writeform method=post action="write_do.jsp?id=<%=idx%>&pg=<%=pg%>&author=<%=userId%>">
-    <%
-        }
-    %>
     <tr>
         <td>
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -88,7 +78,7 @@ function writeCheck()
                     <td>&nbsp;</td>
                 </tr>
                 <%
-                    if (!userId.equals("null")) {
+                    if (userId != null) {
                 %>
                 <tr height="1" bgcolor="#dddddd">
                     <td colspan="4"></td>

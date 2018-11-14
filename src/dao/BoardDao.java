@@ -1,13 +1,17 @@
 package dao;
 
+import utils.CookieUtils;
 import utils.DBConnect;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import vo.BoardVo;
 import vo.PagingVo;
@@ -74,6 +78,7 @@ public class BoardDao {
         String password = "";
         try {
             String sqlPasswd = "SELECT passwd FROM board WHERE id = ?";
+            System.out.println("sqlPasswd: " + sqlPasswd);
             pstm = conn.prepareStatement(sqlPasswd);
             pstm.setInt(1, idx);
             rs = pstm.executeQuery();
@@ -180,7 +185,7 @@ public class BoardDao {
         ArrayList<BoardVo> boardList = new ArrayList<BoardVo>();
 
         try {
-            String sqlList = "SELECT id, author, title, todate, indent from board order by parent DESC, step ASC";
+            String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt from board A order by parent DESC, step ASC";
             pstm = conn.prepareStatement(sqlList);
             System.out.println("sqlList : " + sqlList);
             rs = pstm.executeQuery();
@@ -192,6 +197,7 @@ public class BoardDao {
                 boardVo.setTitle(rs.getString(3));
                 boardVo.setTodate(rs.getDate(4));
                 boardVo.setIndent(rs.getInt(5));
+                boardVo.setCommentCnt(rs.getInt(6));
 
                 boardList.add(boardVo);
             }
@@ -309,10 +315,21 @@ public class BoardDao {
      *
      * 게시판 글을 쓰기 위한 메소드
      */
-    public void sqlInsert(HttpServletRequest request, String kindType, int parentInsert) {
+    public void sqlInsert(HttpServletRequest request, HttpServletResponse response, String kindType) throws IOException {
+        int insertCnt = 0;
+        int parentInsert = sqlBoardMax();
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        int pg = Integer.parseInt(request.getParameter("pg"));
 
         BoardVo boardVo = new BoardVo();
-        if(request.getParameter("author") != null ) {
+
+        CookieUtils cookieUtils = new CookieUtils();
+        String loginId = cookieUtils.checkLogin(request, "loginId");
+
+        if (loginId != null) {
+            boardVo.setAuthor(loginId);
+        } else {
             boardVo.setAuthor(request.getParameter("author"));
         }
 
@@ -335,12 +352,27 @@ public class BoardDao {
                 pstm.setString(5, kindType);
             }
             pstm.setInt(6, parentInsert + 1);
-            pstm.execute();
+            insertCnt = pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
             dbconnect.close(pstm, conn);
         }
+
+        PrintWriter out = response.getWriter();
+        if (insertCnt == 1) {
+            out.print("<script language=javascript>");
+            out.print("self.window.alert(\"입력한 글을 저장하였습니다.\");");
+                    out.print("location.href = \"lists.jsp?id=" + id + "&pg=" + pg + "\";");
+            out.print("</script>");
+            out.close();
+        } else {
+            out.print("<script language=javascript>");
+            out.print(" self.window.alert(\"실패\");");
+            out.print("location.href=\"javascript:history.back()\";");
+            out.print("</script>");
+        }
+        out.close();
     }
 
     public void sqlReplySortUpdate(int parent, int step) {
@@ -448,5 +480,39 @@ public class BoardDao {
             dbconnect.resultClose(rs);
         }
         return statusSelect;
+    }
+
+    public void modifyCheckDo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            String password = "";
+            int idx = Integer.parseInt(request.getParameter("id"));
+            System.out.println("idx: " + idx);
+            int pg = Integer.parseInt(request.getParameter("pg"));
+            String pass = request.getParameter("password");
+            System.out.println(pass);
+            password = sqlPasswd(idx);
+            System.out.println("password: " + password);
+            if (password == null) {
+                PrintWriter out = response.getWriter();
+                out.print("<script language=javascript>");
+                out.print(" self.window.alert(\"자기글이 아닙니다.\");");
+                out.print("location.href=\"javascript:history.back()\";");
+                out.print("</script>");
+                out.close();
+            } else if (password.equals(pass)) {
+                response.sendRedirect("modify.jsp?id=" + idx + "&pg=" + pg );
+            } else {
+                PrintWriter out = response.getWriter();
+                out.print("<script language=javascript>");
+                out.print(" self.window.alert(\"비밀번호를 틀렸습니다.\");");
+                out.print("location.href=\"javascript:history.back()\";");
+                out.print("</script>");
+                out.close();
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
