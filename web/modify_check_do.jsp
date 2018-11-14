@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ page import="dao.BoardDao" %>
+<%@include file="include/common.jsp"%>
 <%
-    request.setCharacterEncoding("UTF-8");
     BoardDao boardDao = new BoardDao();
     boardDao.modifyCheckDo(request, response);
 %>

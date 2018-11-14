@@ -19,7 +19,6 @@
 <%
     PagingVo pagingVo = new PagingVo();
 
-    CookieUtils cookieUtils = new CookieUtils();
     DBConnect dbConnect = new DBConnect();
     CheckLength checkLength = new CheckLength();
 
@@ -39,12 +38,10 @@
     int startPage = pagingVo.getStartPage();
     int pageSize = pagingVo.getPageSize();
     int countPage = pagingVo.getCountPage();
-    System.out.println("pg : " + pg);
-    System.out.println("startPage: " + startPage);
-    System.out.println("countPage: " + countPage);
     int end = pagingVo.getEnd();
 
-    String loginId = cookieUtils.checkLogin(request, "loginId");
+    String userId = new CookieUtils().checkLogin(request, "loginId");
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -53,14 +50,12 @@
 </head>
 <body>
 <%
-    if (loginId == null || loginId.equals("null")) {
-        loginId = "방문자";
+    if (userId == null || userId.equals("null")) {
+        userId = "방문자";
     }
 
     int total = boardDao.sqlCount();
     int allPage = (int)Math.ceil(total / (double)pageSize); // 전체 게시물 갯수와 페이지에 보여야할 갯수를 나누어서 필요한 전체 페이지 수를 구한다. 나눠진 값에대해 자리 올림을 하여 필요 페이지수를 구한다.
-
-    System.out.println("allPage : " + allPage);
 
     if(endPage > allPage) { //마지막 페이지가 모든 페이지 값보다 클시에 마지막 페이지는 총 페이지 수로 대체
         endPage = allPage;
@@ -68,7 +63,7 @@
 
 %>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-    <tr height="5">Welcome to <%=loginId%>
+    <tr height="5">Welcome to <%=userId%>
         <td width="5"></td>
     </tr>
     <tr style="text-align:center;">
@@ -90,7 +85,7 @@
 
         ArrayList<BoardVo> voList = boardDao.sqlBoardList();
 
-        for(int i = pageSize * (pg - 1); i < end; i++) {
+        for(int i = pageSize * (pg - 1) ; i < end; i++) {
             BoardVo boardVo = voList.get(i);
             id = boardVo.getId();
             int indent = boardVo.getIndent();
@@ -98,11 +93,8 @@
             String title = checkLength.checkString(beforeTilte);
             String author = boardVo.getAuthor();
             Date todate = boardVo.getTodate();
-
-//            int commentCount = commentDao.sqlCountComment(id);
             int commentCount = boardVo.getCommentCnt();
-
-            String postStatus = boardDao.sqlPostStatusSelect(id);
+            String postStatus = boardVo.getPostStatus();
     %>
     <tr height="25" align="center">
         <td>&nbsp;</td>

@@ -6,20 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
-<%@ page import="utils.CookieUtils"%>
 <%@ page import="dao.BoardDao" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ include file="include/common.jsp"%>
 <%
-    request.setCharacterEncoding("UTF-8");
-
-    BoardDao boardDao = new BoardDao();
-
     int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
-
+    BoardDao boardDao = new BoardDao();
     boardDao.sqlUpdate(request, idx);
-    System.out.println();
-
 %>
 <script language=javascript>
     self.window.alert("글이 수정되었습니다.");

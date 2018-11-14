@@ -15,19 +15,17 @@
 <%@ page import="vo.CommentVo" %>
 <%@include file="include/common.jsp"%>
 <%
-
     BoardDao boardDao = new BoardDao();
     CommentDao commentDao = new CommentDao();
-    CookieUtils cookieUtils = new CookieUtils();
-    String loginId = cookieUtils.checkLogin(request, "loginId");
-
-    int idx = Integer.parseInt(request.getParameter("id")); // lists.jsp에서 get 메소드로 전달된 id 값
+    String userId = new CookieUtils().checkLogin(request, "loginId");
+    int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
+
     int cid = 0;
-    String userId = loginId;
     String author = null;
     String title = null;
     String content = null;
+    int commentTotal =  0;
 
     ArrayList<BoardVo> boardList = boardDao.sqlBoardDetailList(idx);
     int size = boardList.size()-1;
@@ -35,6 +33,8 @@
     author = boardVo.getAuthor();
     title = boardVo.getTitle();
     content = boardVo.getContent();
+    commentTotal = boardVo.getCommentCnt();
+
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -118,7 +118,7 @@
             </table>
             <table>
                 <%
-                        int commentTotal = commentDao.sqlCountComment(idx);
+
                         if (userId != null && !userId.equals("null")) {
                 %>
                 <form name=writecommentcheckform method=post
@@ -208,7 +208,7 @@
                     </td>
                     <td align="right">
                         <input type=button value="댓글 삭제"
-                               OnClick="window.location='comment_account_delete.jsp?id=<%=idx%>&pg=<%=pg%>&content=<%=contentComment%>'">
+                               OnClick="window.location='comment_delete_do.jsp?id=<%=idx%>&pg=<%=pg%>&content=<%=contentComment%>'">
                     </td>
                     <%
                         }

@@ -6,17 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ page import="utils.CookieUtils"%>
 <%@ page import="dao.CommentDao" %>
+<%@include file="include/common.jsp"%>
 <%
-    request.setCharacterEncoding("UTF-8");
     CommentDao commentDao = new CommentDao();
-    CookieUtils cookieUtils = new CookieUtils();
-    String loginId = cookieUtils.checkLogin(request, "loginId");
 
     int count = 0;
     int countAfter = 0;
-
     int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
 
@@ -31,6 +27,5 @@
     location.href = "detail.jsp?id=<%=idx%>&pg=<%=pg%>";
 </script>
 <%
-        System.out.println("done");
     }
 %>

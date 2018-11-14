@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="dao.CommentDao" %>
+<%@ include file="include/common.jsp"%>
 <%
-    request.setCharacterEncoding("UTF-8");
 
     int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));

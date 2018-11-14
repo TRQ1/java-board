@@ -7,18 +7,16 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="utils.CookieUtils"%>
-<%@ page import="dao.BoardDao" %>
+<%@ page import="dao.BoardDao"%>
+<%@ include file="include/common.jsp"%>
 <%
 
     BoardDao boardDao = new BoardDao();
-    CookieUtils cookieUtils = new CookieUtils();
-    String loginId = cookieUtils.checkLogin(request, "loginId");
-    String userId = loginId;
+    String userId = new CookieUtils().checkLogin(request, "loginId");
 
     int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
 
-    request.setCharacterEncoding("UTF-8");
     String title = boardDao.sqlTitleSelect(idx);
 %>
 <html>
@@ -27,17 +25,7 @@
 </head>
 <body>
 <table>
-    <%
-        if(userId.equals("null")) {
-    %>
-    <form name=replyform method=post action="reply_do.jsp?id=<%=idx%>">
-    <%
-        } else {
-    %>
-    <form name=replyform method=post action="reply_do.jsp?id=<%=idx%>&author=<%=userId%>">
-    <%
-        }
-    %>
+    <form name=replyform method=post action="reply_do.jsp?id=<%=idx%>&pg=<%=pg%>">
         <tr>
             <td>
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">

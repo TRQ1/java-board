@@ -5,12 +5,12 @@
   Time: AM 10:49
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="java.sql.*"%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ page import="utils.CookieUtils"%>
 <%@ page import="vo.BoardVo" %>
 <%@ page import="dao.BoardDao" %>
 <%@ page import="java.util.ArrayList" %>
+<%@include file="include/common.jsp" %>
 <script language = "javascript">
     function modifyCheck() {
         var form = document.modifyform;
@@ -32,19 +32,16 @@
     }
 </script>
 <%
-    request.setCharacterEncoding("UTF-8");
-
     BoardDao boardDao = new BoardDao();
-    CookieUtils cookieUtils = new CookieUtils();
-    String userId = cookieUtils.checkLogin(request, "loginId");
+    String userId = new CookieUtils().checkLogin(request, "loginId");
+    int idx = Integer.parseInt(request.getParameter("id"));
+    int pg = Integer.parseInt(request.getParameter("pg"));
 
     String author = "";
     String content = "";
     String title = "";
     String spassword = "";
 
-    int idx = Integer.parseInt(request.getParameter("id"));
-    int pg = Integer.parseInt(request.getParameter("pg"));
     ArrayList<BoardVo> modifyList = boardDao.sqlModifyBoardList(idx);
     int size = modifyList.size()-1;
     BoardVo modify = modifyList.get(size);

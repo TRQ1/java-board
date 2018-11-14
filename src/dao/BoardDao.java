@@ -185,7 +185,7 @@ public class BoardDao {
         ArrayList<BoardVo> boardList = new ArrayList<BoardVo>();
 
         try {
-            String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt from board A order by parent DESC, step ASC";
+            String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A order by parent DESC, step ASC";
             pstm = conn.prepareStatement(sqlList);
             System.out.println("sqlList : " + sqlList);
             rs = pstm.executeQuery();
@@ -198,6 +198,7 @@ public class BoardDao {
                 boardVo.setTodate(rs.getDate(4));
                 boardVo.setIndent(rs.getInt(5));
                 boardVo.setCommentCnt(rs.getInt(6));
+                boardVo.setPostStatus(rs.getString(7));
 
                 boardList.add(boardVo);
             }
@@ -263,7 +264,7 @@ public class BoardDao {
         ArrayList<BoardVo> boardDetailList = new ArrayList<BoardVo>();
 
         try {
-            String sqlList = "SELECT author, title, content from board where id=?";
+            String sqlList = "SELECT author, title, content, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt from board A where id=?";
             pstm = conn.prepareStatement(sqlList);
             pstm.setInt(1, idx);
             rs = pstm.executeQuery();
@@ -273,6 +274,7 @@ public class BoardDao {
                 boardVo.setAuthor(rs.getString(1));
                 boardVo.setTitle(rs.getString(2));
                 boardVo.setContent(rs.getString(3));
+                boardVo.setCommentCnt(rs.getInt(4));
 
                 boardDetailList.add(boardVo);
             }
@@ -323,12 +325,10 @@ public class BoardDao {
         int pg = Integer.parseInt(request.getParameter("pg"));
 
         BoardVo boardVo = new BoardVo();
+        String userId = new CookieUtils().checkLogin(request, "loginId");
 
-        CookieUtils cookieUtils = new CookieUtils();
-        String loginId = cookieUtils.checkLogin(request, "loginId");
-
-        if (loginId != null) {
-            boardVo.setAuthor(loginId);
+        if (!userId.equals("null")) {
+            boardVo.setAuthor(userId);
         } else {
             boardVo.setAuthor(request.getParameter("author"));
         }
@@ -340,7 +340,6 @@ public class BoardDao {
         Connection conn = dbconnect.connDb();
         try {
             String sqlInsert = "INSERT INTO board(author,passwd,title,content,type,parent,todate) VALUES(?,?,?,?,?,?,NOW())";
-            System.out.println(sqlInsert);
             pstm = conn.prepareStatement(sqlInsert);
             pstm.setString(1, boardVo.getAuthor());
             pstm.setString(2, boardVo.getPassword());
@@ -401,9 +400,20 @@ public class BoardDao {
     /**
      * 답글 달기
      */
-    public void sqlReplyInsert(HttpServletRequest request, String kindType, int parentInsert, int indentInsert, int stepInsert) {
+    public void sqlReplyInsert(HttpServletRequest request, HttpServletResponse response, String kindType, int parentInsert, int indentInsert, int stepInsert, int idx) throws IOException {
+        int replyCnt = 0;
+        int pg = Integer.parseInt(request.getParameter("pg"));
+
         BoardVo boardVo = new BoardVo();
-        boardVo.setAuthor(request.getParameter("author"));
+        String userId = new CookieUtils().checkLogin(request, "loginId");
+
+        if (userId != null && userId.equals("null")) {
+            boardVo.setAuthor(request.getParameter("author"));
+        } else {
+            boardVo.setAuthor(userId);
+
+        }
+
         boardVo.setPassword(request.getParameter("password"));
         boardVo.setTitle(request.getParameter("title"));
         boardVo.setContent(request.getParameter("content"));
@@ -411,7 +421,6 @@ public class BoardDao {
         Connection conn = dbconnect.connDb();
         try {
             String sqlInsert = "INSERT INTO board(author,passwd,title,content,type,parent,indent,step,todate) VALUES(?,?,?,?,?,?,?,?,NOW())";
-            System.out.println(sqlInsert);
             pstm = conn.prepareStatement(sqlInsert);
             pstm.setString(1, boardVo.getAuthor());
             pstm.setString(2, boardVo.getPassword());
@@ -425,13 +434,29 @@ public class BoardDao {
             pstm.setInt(6, parentInsert);
             pstm.setInt(7, indentInsert + 1);
             pstm.setInt(8, stepInsert + 1);
-            pstm.execute();
+            replyCnt = pstm.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
             dbconnect.close(pstm, conn);
         }
+
+        PrintWriter out = response.getWriter();
+        if (replyCnt == 1) {
+            out.print("<script language=javascript>");
+            out.print("self.window.alert(\"답변을 저장하였습니다.\");");
+            out.print("location.href = \"lists.jsp?id=" + idx + "&pg=" + pg + "\";");
+            out.print("</script>");
+            out.close();
+        } else {
+            out.print("<script language=javascript>");
+            out.print(" self.window.alert(\"실패 했습니다.\");");
+            out.print("location.href=\"javascript:history.back()\";");
+            out.print("</script>");
+        }
+        out.close();
+
     }
 
     /**
@@ -486,12 +511,10 @@ public class BoardDao {
         try {
             String password = "";
             int idx = Integer.parseInt(request.getParameter("id"));
-            System.out.println("idx: " + idx);
             int pg = Integer.parseInt(request.getParameter("pg"));
             String pass = request.getParameter("password");
             System.out.println(pass);
             password = sqlPasswd(idx);
-            System.out.println("password: " + password);
             if (password == null) {
                 PrintWriter out = response.getWriter();
                 out.print("<script language=javascript>");

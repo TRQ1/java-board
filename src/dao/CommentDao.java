@@ -1,5 +1,7 @@
 package dao;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +9,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import utils.DBConnect;
+import utils.CookieUtils;
 import vo.CommentVo;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class CommentDao {
 
@@ -208,14 +213,53 @@ public class CommentDao {
     /**
      * Comment를 삭제하기위한 메소드
      */
-    public void sqlCommentDelete(int idx) {
+    public void sqlCommentDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CommentDao commentDao = new CommentDao();
+        int idx = Integer.parseInt(request.getParameter("id"));
+        int pg = Integer.parseInt(request.getParameter("pg"));
+        int id = Integer.parseInt(request.getParameter("cid"));
+        String pass = request.getParameter("password");
+        String password = commentDao.sqlCommentPasswd(id);
+        if (password.equals(pass)) {
+            PreparedStatement pstm = null;
+            Connection conn = dbconnect.connDb();
+            try {
+                String sqlDelete = "DELETE FROM comment WHERE id=?";
+                pstm = conn.prepareStatement(sqlDelete);
+                pstm.setInt(1, id);
+                pstm.executeUpdate();
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            } finally {
+                dbconnect.close(pstm, conn);
+            }
+            PrintWriter outPrint = response.getWriter();
+            outPrint.print("<script language=javascript>");
+            outPrint.print(" self.window.alert(\"삭제되었습니다.\");");
+            outPrint.print("location.href = \"detail.jsp?id=" + idx + "&pg=" + pg + "\";");
+            outPrint.print("</script>");
+            outPrint.close();
+        } else {
+            PrintWriter outPrint = response.getWriter();
+            outPrint.print("<script language=javascript>");
+            outPrint.print(" self.window.alert(\"비밀번호를 틀렸습니다. 다시 시도하세요.\");");
+            outPrint.print("location.href=\"javascript:history.back()\";");
+            outPrint.print("</script>");
+            outPrint.close();
+        }
+    }
+
+    public void sqlAccountCommentDelete(HttpServletRequest request, HttpServletResponse response, int id) throws IOException {
+        int idx = Integer.parseInt(request.getParameter("id"));
+        int pg = Integer.parseInt(request.getParameter("pg"));
+
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlDelete = "DELETE FROM comment WHERE id=?";
-            System.out.println(sqlDelete);
-            pstm = conn.prepareStatement(sqlDelete);
-            pstm.setInt(1, idx);
+            String sqlAccountDelete = "DELETE FROM comment WHERE id=?";
+            pstm = conn.prepareStatement(sqlAccountDelete);
+            pstm.setInt(1, id);
             pstm.executeUpdate();
 
         } catch (SQLException e) {
@@ -223,5 +267,11 @@ public class CommentDao {
         } finally {
             dbconnect.close(pstm, conn);
         }
+        PrintWriter outPrint = response.getWriter();
+        outPrint.print("<script language=javascript>");
+        outPrint.print(" self.window.alert(\"삭제되었습니다.\");");
+        outPrint.print("location.href = \"detail.jsp?id=" + idx + "&pg=" + pg + "\";");
+        outPrint.print("</script>");
+        outPrint.close();
     }
 }

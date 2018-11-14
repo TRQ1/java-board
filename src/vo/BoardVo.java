@@ -18,6 +18,8 @@ public class BoardVo {
     String status;
     String use;
     int commentCnt;
+    String postStatus;
+
 
     public int getId() {
         return id;
@@ -137,5 +139,13 @@ public class BoardVo {
 
     public void setCommentCnt(int commentCnt) {
         this.commentCnt = commentCnt;
+    }
+
+    public String getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(String postStatus) {
+        this.postStatus = postStatus;
     }
 }

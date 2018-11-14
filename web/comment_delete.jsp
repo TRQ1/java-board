@@ -6,19 +6,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ page import="utils.CookieUtils" %>
 <%@ page import="dao.CommentDao" %>
+<%@include file="include/common.jsp"%>
 <%
-    request.setCharacterEncoding("UTF-8");
-
     int id = Integer.parseInt(request.getParameter("id")); // 원래 글의 parent
     int pg = Integer.parseInt(request.getParameter("pg"));
-    CommentDao commentDao = new CommentDao();
-    CookieUtils cookieUtils = new CookieUtils();
-    String userId = cookieUtils.checkLogin(request, "loginId");
     String content = request.getParameter("content");
 
+    CommentDao commentDao = new CommentDao();
     int caId = commentDao.sqlSelectCommentId(content, id);
+    System.out.println(caId);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
