@@ -1,30 +1,46 @@
 package utils;
 
+import com.sun.deploy.net.HttpRequest;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import utils.CookieUtils;
 import vo.UserVo;
 import dao.UserDao;
+import utils.SessionUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class Login {
 
-    public void userLoignCheck(HttpServletResponse response, String userName, String userPasswd) throws IOException {
+    SessionUtils sessionUtils = new SessionUtils();
 
-        String userGId = null;
-        String userGPass = null;
-        CookieUtils cookieUtils = new CookieUtils();
+    public void userLoignCheck(HttpServletRequest request, HttpServletResponse response, String userName, String userPasswd) throws IOException {
+
+        String userGId = "";
+        String userGPass = "";
 
         do {
             UserVo userVo = new UserVo();
             UserDao userDao = new UserDao();
 
+
             userDao.sqlLogin();
             userGId = userVo.getUserid();
+            System.out.println(userGId);
             userGPass = userVo.getUserpasswd();
+            System.out.println(userGPass);
 
         } while (userName.equals(userGId) && userPasswd.equals(userGPass));
-            cookieUtils.createCookie(response, "loginId", userName);
+            sessionUtils.createSession(request, userName);
+            sessionUtils.getSession(request, userName);
             response.sendRedirect("lists.jsp");
+    }
+
+    public void vistorLoginCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        sessionUtils.createSession(request, "vistor");
+        sessionUtils.getSession(request, "vistor");
+        response.sendRedirect("lists.jsp");
     }
 }

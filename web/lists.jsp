@@ -9,21 +9,18 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="utils.PagingUtil" %>
 <%@ page import="utils.CookieUtils"%>
-<%@ page import="utils.DBConnect" %>
 <%@ page import="utils.CheckLength" %>
 <%@ page import="dao.BoardDao"%>
 <%@ page import="vo.PagingVo" %>
 <%@ page import="vo.BoardVo" %>
-<%@ page import="dao.CommentDao" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="utils.SessionUtils" %>
 <%
     PagingVo pagingVo = new PagingVo();
 
-    DBConnect dbConnect = new DBConnect();
     CheckLength checkLength = new CheckLength();
-
     BoardDao boardDao = new BoardDao();
-    CommentDao commentDao = new CommentDao();
+    String sessionId = new SessionUtils().getSession(request, "sessionId");
 
     int id = 0;
     int pg = 1;
@@ -41,7 +38,7 @@
     int end = pagingVo.getEnd();
 
     String userId = new CookieUtils().checkLogin(request, "loginId");
-
+    System.out.println("sessionId : " + sessionId);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -50,8 +47,8 @@
 </head>
 <body>
 <%
-    if (userId == null || userId.equals("null")) {
-        userId = "방문자";
+    if (sessionId != null && sessionId.equals("vistor")) {
+        sessionId = "방문자";
     }
 
     int total = boardDao.sqlCount();
@@ -63,7 +60,7 @@
 
 %>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-    <tr height="5">Welcome to <%=userId%>
+    <tr height="5">Welcome to <%=sessionId%>
         <td width="5"></td>
     </tr>
     <tr style="text-align:center;">

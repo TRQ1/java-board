@@ -6,13 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ page import="utils.CookieUtils"%>
 <%@ page import="dao.BoardDao"%>
 <%@ include file="include/common.jsp"%>
+<%@ include file="include/session.jsp"%>
 <%
 
     BoardDao boardDao = new BoardDao();
-    String userId = new CookieUtils().checkLogin(request, "loginId");
 
     int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));

@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ page import="vo.UserVo" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <script language="javascript">
@@ -40,7 +39,7 @@
     패스워드:<br/><input type="password" name="userPasswd"/><br/>
     <input type="submit" value="Login" OnClick="javascript:checkLogin();"/>
 </form>
-<form name=unsecurityloginform method=post action="blogin_do.jsp">
+<form name=unsecurityloginform method=post action="login_do.jsp?userId=vistor">
     <input type="submit" value="비회원 접속"/>
 </form>
 </body>

@@ -12,6 +12,11 @@
     String userPasswd = request.getParameter("userPasswd");
 
     Login login = new Login();
-    login.userLoignCheck(response, userName, userPasswd);
+    if(userName != null && userName.equals("vistor")) {
+        login.vistorLoginCheck(request, response);
+    } else if(userName != null && !userName.equals("vistor")) {
+        login.userLoignCheck(request, response, userName, userPasswd);
+    }
+
 %>
 

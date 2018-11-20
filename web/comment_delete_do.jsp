@@ -7,10 +7,9 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="dao.CommentDao" %>
-<%@ page import="utils.CookieUtils" %>
 <%@include file="include/common.jsp"%>
+<%@include file="include/session.jsp"%>
 <%
-    String userId = new CookieUtils().checkLogin(request, "loginId");
     CommentDao commentDao = new CommentDao();
     if(userId != null && userId.equals("null")){
         commentDao.sqlCommentDelete(request, response);

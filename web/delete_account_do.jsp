@@ -8,9 +8,8 @@
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page import="dao.BoardDao" %>
+<%@ include file="include/common.jsp"%>
 <%
-    request.setCharacterEncoding("UTF-8");
-
     int idx = Integer.parseInt(request.getParameter("id"));
     BoardDao boardDao = new BoardDao();
     boardDao.sqlPostDelete(idx);

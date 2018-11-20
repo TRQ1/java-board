@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ page import="utils.CookieUtils" %>
 <%@ page import="dao.CommentDao" %>
+<%@ include file="include/session.jsp"%>
 <%
     request.setCharacterEncoding("UTF-8");
 
@@ -16,9 +16,6 @@
     int pg = Integer.parseInt(request.getParameter("pg"));
 
     CommentDao commentDao = new CommentDao();
-    CookieUtils cookieUtils = new CookieUtils();
-    String loginId = cookieUtils.checkLogin(request, "loginId");
-    String userId = loginId;
 
     String content = request.getParameter("content");
     String author = request.getParameter("author"); // 댓글 쓴 사람
