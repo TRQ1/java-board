@@ -1,6 +1,5 @@
 package dao;
 
-import utils.CookieUtils;
 import utils.DBConnect;
 
 import java.io.IOException;
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utils.SessionUtils;
 import vo.BoardVo;
-import vo.PagingVo;
 
 public class BoardDao {
 
@@ -325,7 +324,7 @@ public class BoardDao {
         int pg = Integer.parseInt(request.getParameter("pg"));
 
         BoardVo boardVo = new BoardVo();
-        String userId = new CookieUtils().checkLogin(request, "loginId");
+        String userId = new SessionUtils().getSession(request, "sessionId");
 
         if (!userId.equals("null")) {
             boardVo.setAuthor(userId);
@@ -405,7 +404,7 @@ public class BoardDao {
         int pg = Integer.parseInt(request.getParameter("pg"));
 
         BoardVo boardVo = new BoardVo();
-        String userId = new CookieUtils().checkLogin(request, "loginId");
+        String userId = new SessionUtils().getSession(request, "sessionId");
 
         if (userId != null && userId.equals("null")) {
             boardVo.setAuthor(request.getParameter("author"));

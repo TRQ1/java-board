@@ -9,10 +9,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import utils.DBConnect;
-import utils.CookieUtils;
 import vo.CommentVo;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
