@@ -43,7 +43,7 @@
             </td>
         </tr>
             <%
-        } else if(userId.equals("null") && author != null){
+        } else if(userId.equals("vistor") && author != null){
     %>
         <form name=commentModifyform method=post
               action="comment_modify_do.jsp?id=<%=id%>&pg=<%=pg%>&author=<%=author%>&cid=<%=cid%>">

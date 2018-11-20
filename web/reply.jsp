@@ -45,7 +45,7 @@
                         <td colspan="4"></td>
                     </tr>
                     <%
-                        if (userId == null || userId.equals("null")) {
+                        if (userId == null || userId.equals("vistor")) {
                     %>
                     <tr>
                         <td>&nbsp;</td>

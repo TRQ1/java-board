@@ -326,7 +326,7 @@ public class BoardDao {
         BoardVo boardVo = new BoardVo();
         String userId = new SessionUtils().getSession(request, "sessionId");
 
-        if (!userId.equals("null")) {
+        if (!userId.equals("vistor")) {
             boardVo.setAuthor(userId);
         } else {
             boardVo.setAuthor(request.getParameter("author"));
@@ -406,7 +406,7 @@ public class BoardDao {
         BoardVo boardVo = new BoardVo();
         String userId = new SessionUtils().getSession(request, "sessionId");
 
-        if (userId != null && userId.equals("null")) {
+        if (userId != null && userId.equals("vistor")) {
             boardVo.setAuthor(request.getParameter("author"));
         } else {
             boardVo.setAuthor(userId);
