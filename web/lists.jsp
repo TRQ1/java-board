@@ -144,8 +144,6 @@
     <tr>
         <td align="center">
             <%
-                System.out.println("pg2 : " + pg);
-                System.out.println("countPage : " + countPage);
                 if(pg > countPage) {
             %>
             [<a href="lists.jsp?pg=1">◀◀</a>]

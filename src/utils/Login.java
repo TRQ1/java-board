@@ -35,12 +35,12 @@ public class Login {
         } while (userName.equals(userGId) && userPasswd.equals(userGPass));
             sessionUtils.createSession(request, userName);
             sessionUtils.getSession(request, userName);
-            response.sendRedirect("lists.jsp");
+            response.sendRedirect("index.jsp");
     }
 
     public void vistorLoginCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
         sessionUtils.createSession(request, "vistor");
         sessionUtils.getSession(request, "vistor");
-        response.sendRedirect("lists.jsp");
+        response.sendRedirect("index.jsp");
     }
 }
