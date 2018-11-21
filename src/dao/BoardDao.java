@@ -512,7 +512,6 @@ public class BoardDao {
             int idx = Integer.parseInt(request.getParameter("id"));
             int pg = Integer.parseInt(request.getParameter("pg"));
             String pass = request.getParameter("password");
-            System.out.println(pass);
             password = sqlPasswd(idx);
             if (password == null) {
                 PrintWriter out = response.getWriter();
@@ -535,6 +534,48 @@ public class BoardDao {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void addBoardConfigEdit(HttpServletRequest request, String boardName, int login, int admin, int comment, int reply) {
+        PreparedStatement pstm = null;
+        Connection conn = dbconnect.connDb();
+        try {
+            String sqlInsert = "INSERT INTO board(boardName,login,admin,comment,reply) VALUES(?,?,?,?,?)";
+            pstm = conn.prepareStatement(sqlInsert);
+            pstm.setString(1, boardName);
+            pstm.setInt(2, login);
+            pstm.setInt(3, admin);
+            pstm.setInt(4, comment);
+            pstm.setInt(5, reply);
+            pstm.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+        }
+    }
+
+    public void updateBoardConfigEdit(HttpServletRequest request, int boardCode, String boardName, int login, int admin, int comment, int reply) {
+        PreparedStatement pstm = null;
+        Connection conn = dbconnect.connDb();
+        try {
+            String sqlInsert = "INSERT INTO board(boardName,login,admin,comment,reply) VALUES(?,?,?,?,?)";
+            String sqlUpdate = "UPDATE board SET boardName=?, login=?, admin=?, comment=?, reply=? where boardCode =?";
+            pstm = conn.prepareStatement(sqlUpdate);
+            pstm.setString(1, boardName);
+            pstm.setInt(2, login);
+            pstm.setInt(3, admin);
+            pstm.setInt(4, comment);
+            pstm.setInt(5, reply);
+            pstm.setInt(6, boardCode);
+            pstm.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
         }
     }
 }

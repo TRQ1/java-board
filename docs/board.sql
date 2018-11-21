@@ -13,7 +13,18 @@ CREATE TABLE `board` (
     `sort` int(100) NULL DEFAULT 0,
     `status` varchar(100) NULL,
     `use` varchar(100) NULL,
+    `boardCode` int(20) NOT NULL 0,
     primary key(id)
+);
+
+CREATE TABLE `boardConfig` (
+    `boardCode` int(11) NOT NULL AUTO_INCREMENT,
+    `boardName` varchar(20) NOT NULL,
+    `login` int(11) NOT NULL,
+    `admin` int(11) NOT NULL,
+    `comment` int(11) NOT NULL,
+    `reply` int(11) NOT NULL,
+    primary key(boardCode)
 );
 
 CREATE TABLE `comment` (
@@ -38,9 +49,3 @@ CREATE TABLE `account` (
     primary key(id)
 );
 
-CREATE TABLE `board_view` (
-  `id` int (100) NOT NULL AUTO_INCREMENT,
-  `boardname` varchar(50) NOT NULL,
-  `status` varchar(100) NULL,
-  primary key(id)
-);
