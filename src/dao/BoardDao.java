@@ -537,7 +537,13 @@ public class BoardDao {
         }
     }
 
-    public void addBoardConfigEdit(HttpServletRequest request, String boardName, int login, int admin, int comment, int reply) {
+    public void addBoardConfigEdit(HttpServletRequest request) {
+        String boardName = request.getParameter("boardName");
+        int login = Integer.parseInt(request.getParameter("login"));
+        int admin = Integer.parseInt(request.getParameter("admin"));
+        int comment = Integer.parseInt(request.getParameter("comment"));
+        int reply = Integer.parseInt(request.getParameter("reply"));
+
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
@@ -557,11 +563,16 @@ public class BoardDao {
         }
     }
 
-    public void updateBoardConfigEdit(HttpServletRequest request, int boardCode, String boardName, int login, int admin, int comment, int reply) {
+    public void updateBoardConfigEdit(HttpServletRequest request, int boardCode) {
+        String boardName = request.getParameter("boardName");
+        int login = Integer.parseInt(request.getParameter("login"));
+        int admin = Integer.parseInt(request.getParameter("admin"));
+        int comment = Integer.parseInt(request.getParameter("comment"));
+        int reply = Integer.parseInt(request.getParameter("reply"));
+
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlInsert = "INSERT INTO board(boardName,login,admin,comment,reply) VALUES(?,?,?,?,?)";
             String sqlUpdate = "UPDATE board SET boardName=?, login=?, admin=?, comment=?, reply=? where boardCode =?";
             pstm = conn.prepareStatement(sqlUpdate);
             pstm.setString(1, boardName);

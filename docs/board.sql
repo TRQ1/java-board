@@ -14,7 +14,9 @@ CREATE TABLE `board` (
     `status` varchar(100) NULL,
     `use` varchar(100) NULL,
     `boardCode` int(20) NOT NULL 0,
-    primary key(id)
+    primary key(id),
+    key `boardConfig_FK` (`boardCode`),
+    constraint `boardConfig_FK`  foreign key (`boardCode`) references `boardConfig` (`boardCode`)
 );
 
 CREATE TABLE `boardConfig` (
