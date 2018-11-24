@@ -77,7 +77,6 @@ public class BoardDao {
         String password = "";
         try {
             String sqlPasswd = "SELECT passwd FROM board WHERE id = ?";
-            System.out.println("sqlPasswd: " + sqlPasswd);
             pstm = conn.prepareStatement(sqlPasswd);
             pstm.setInt(1, idx);
             rs = pstm.executeQuery();
@@ -186,7 +185,6 @@ public class BoardDao {
         try {
             String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A order by parent DESC, step ASC";
             pstm = conn.prepareStatement(sqlList);
-            System.out.println("sqlList : " + sqlList);
             rs = pstm.executeQuery();
 
             while(rs.next()) {
@@ -537,6 +535,8 @@ public class BoardDao {
         }
     }
 
+
+
     public void addBoardConfigEdit(HttpServletRequest request) {
         String boardName = request.getParameter("boardName");
         int login = Integer.parseInt(request.getParameter("login"));
@@ -588,5 +588,30 @@ public class BoardDao {
         } finally {
             dbconnect.close(pstm, conn);
         }
+    }
+
+    public int checkBoardConfigCode(HttpServletRequest request){
+        String boardName = request.getParameter("boardName");
+        int boardCode = 0;
+
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+        try {
+            String sqlPasswd = "SELECT boardCode FROM boardConfig WHERE boardName = ?";
+            pstm = conn.prepareStatement(sqlPasswd);
+            pstm.setString(1, boardName);
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                boardCode = rs.getInt("1");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return boardCode;
     }
 }

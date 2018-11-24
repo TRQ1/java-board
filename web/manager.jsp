@@ -5,7 +5,7 @@
   Time: 3:08 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <html>
 <body>
 <table cellspacing="0" cellpadding="0" border="1">
@@ -19,25 +19,25 @@
     </tr>
         <tr>
             <td align="center">
-                <form method="POST" action="boardConfigEdit.do" style="margin:0">
+                <form method="POST" action="boardConfigEdit.jsp" style="margin:0">
             </td>
             <td align="center">
-                <input type="checkbox" name="b_login" value="1"
+                <input type="checkbox" name="login" value="1"
                        checked
                 >
             </td>
             <td align="center">
-                <input type="checkbox" name="b_admin" value="1"
+                <input type="checkbox" name="admin" value="1"
                        checked
                 >
             </td>
             <td align="center">
-                <input type="checkbox" name="b_comment" value="1"
+                <input type="checkbox" name="comment" value="1"
                        checked
                 >
             </td>
             <td align="center">
-                <input type="checkbox" name="b_reply" value="1"
+                <input type="checkbox" name="reply" value="1"
                        checked
                 >
             </td>
@@ -59,20 +59,20 @@
         <th style="padding:5,5,5,5">추가</th>
     </tr>
     <td>
-        <form method="POST" action="boardConfigAdd.do">
+        <form method="POST" action="boardConfigAdd.jsp">
             <input type="text" name="b_boardName" style="width:100">
     </td>
     <td align="center">
-        <input type="checkbox" name="b_login">
+        <input type="checkbox" name="login">
     </td>
     <td align="center">
-        <input type="checkbox" name="b_admin">
+        <input type="checkbox" name="admin">
     </td>
     <td align="center">
-        <input type="checkbox" name="b_comment">
+        <input type="checkbox" name="comment">
     </td>
     <td align="center">
-        <input type="checkbox" name="b_reply">
+        <input type="checkbox" name="reply">
     </td>
     <td align="center">
         <input type="submit" value="추가">
