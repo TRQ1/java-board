@@ -12,7 +12,7 @@ public class DBConnect {
         Connection conn = null;
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            String url = "jdbc:mariadb://localhost:3306/boards";
+            String url = "jdbc:mariadb://localhost:3306/boards_test";
             String userid = "root";
             String passwd = "qwer0987";
             conn = DriverManager.getConnection(url, userid, passwd);

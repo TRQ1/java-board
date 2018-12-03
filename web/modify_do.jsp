@@ -16,5 +16,5 @@
 %>
 <script language=javascript>
     self.window.alert("글이 수정되었습니다.");
-    location.href = "lists.jsp?pg=<%=pg%>";
+    location.href = "index.jsp?pg=<%=pg%>";
 </script>

@@ -21,7 +21,7 @@ public class UserDao {
         ArrayList<UserVo> userList = new ArrayList<UserVo>();
 
         try {
-            String sqlAccount = "SELECT id, userid, userpasswd FROM account";
+            String sqlAccount = "SELECT id, userid, userpasswd, authority FROM account";
             pstm = conn.prepareStatement(sqlAccount);
             rs = pstm.executeQuery(sqlAccount);
 
@@ -31,6 +31,7 @@ public class UserDao {
                 userVo.setId(rs.getInt(1));
                 userVo.setUserid(rs.getString(2));
                 userVo.setUserpasswd(rs.getString(3));
+                userVo.setAuthority(rs.getInt(4));
                 userList.add(userVo);
 
             }

@@ -174,8 +174,9 @@ public class BoardDao {
     /**
      * 게시판 글 리스트를 읽어드리기 위한 메소드
      */
-    public ArrayList<BoardVo> sqlBoardList() {
+    public ArrayList<BoardVo> sqlBoardList(HttpServletRequest request) {
 
+        int bc = Integer.parseInt(request.getParameter("bc"));
         PreparedStatement pstm = null;
         ResultSet rs = null;
         Connection conn = dbconnect.connDb();
@@ -183,10 +184,10 @@ public class BoardDao {
         ArrayList<BoardVo> boardList = new ArrayList<BoardVo>();
 
         try {
-            String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A order by parent DESC, step ASC";
+            String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A where boardCode = ? order by parent DESC, step ASC";
             pstm = conn.prepareStatement(sqlList);
+            pstm.setInt(1, bc);
             rs = pstm.executeQuery();
-
             while(rs.next()) {
                 BoardVo boardVo = new BoardVo();
                 boardVo.setId(rs.getInt(1));
@@ -320,6 +321,7 @@ public class BoardDao {
 
         int id = Integer.parseInt(request.getParameter("id"));
         int pg = Integer.parseInt(request.getParameter("pg"));
+        int boardCode = Integer.parseInt(request.getParameter("bc"));
 
         BoardVo boardVo = new BoardVo();
         String userId = new SessionUtils().getSession(request, "sessionId");
@@ -336,7 +338,7 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlInsert = "INSERT INTO board(author,passwd,title,content,type,parent,todate) VALUES(?,?,?,?,?,?,NOW())";
+            String sqlInsert = "INSERT INTO board(author,passwd,title,content,type,parent,todate,boardCode) VALUES(?,?,?,?,?,?,NOW(),?)";
             pstm = conn.prepareStatement(sqlInsert);
             pstm.setString(1, boardVo.getAuthor());
             pstm.setString(2, boardVo.getPassword());
@@ -348,6 +350,7 @@ public class BoardDao {
                 pstm.setString(5, kindType);
             }
             pstm.setInt(6, parentInsert + 1);
+            pstm.setInt(7, boardCode);
             insertCnt = pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

@@ -19,7 +19,7 @@
 %>
 <script language=javascript>
     self.window.alert("해당 글을 삭제하였습니다.");
-    location.href="lists.jsp";
+    location.href="index.jsp";
 </script>
 <%
         } else {

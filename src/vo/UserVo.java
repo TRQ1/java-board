@@ -4,7 +4,7 @@ public class UserVo {
     int id;
     String userid;
     String userpasswd;
-    String authority;
+    int authority;
 
     public int getId() {
         return id;
@@ -30,11 +30,11 @@ public class UserVo {
         this.userpasswd = userpasswd;
     }
 
-    public String getAuthority() {
+    public int getAuthority() {
         return authority;
     }
 
-    public void setAuthority(String authority) {
+    public void setAuthority(int authority) {
         this.authority = authority;
     }
 }

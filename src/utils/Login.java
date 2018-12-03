@@ -20,6 +20,7 @@ public class Login {
 
         String userGId = "";
         String userGPass = "";
+        int userAuth = 0;
 
         do {
             UserVo userVo = new UserVo();
@@ -28,9 +29,8 @@ public class Login {
 
             userDao.sqlLogin();
             userGId = userVo.getUserid();
-            System.out.println(userGId);
             userGPass = userVo.getUserpasswd();
-            System.out.println(userGPass);
+            userAuth = userVo.getAuthority();
 
         } while (userName.equals(userGId) && userPasswd.equals(userGPass));
             sessionUtils.createSession(request, userName);
