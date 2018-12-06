@@ -17,7 +17,7 @@
     } else if(bc != 0) {
 %>
 <jsp:include page="lists.jsp?id=" >
-    <jsp:param name="bc" value="${bc}"/>
+    <jsp:param name="bc" value="<%=bc%>"/>
 </jsp:include>
 <%
     }

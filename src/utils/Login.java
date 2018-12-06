@@ -15,32 +15,49 @@ import java.io.IOException;
 public class Login {
 
     SessionUtils sessionUtils = new SessionUtils();
+    UserDao userDao = new UserDao();
 
     public void userLoignCheck(HttpServletRequest request, HttpServletResponse response, String userName, String userPasswd) throws IOException {
 
         String userGId = "";
         String userGPass = "";
-        int userAuth = 0;
+        int bc = 0;
 
         do {
             UserVo userVo = new UserVo();
-            UserDao userDao = new UserDao();
-
-
             userDao.sqlLogin();
             userGId = userVo.getUserid();
             userGPass = userVo.getUserpasswd();
-            userAuth = userVo.getAuthority();
+            bc = userDao.getAuth(userName);
 
         } while (userName.equals(userGId) && userPasswd.equals(userGPass));
             sessionUtils.createSession(request, userName);
             sessionUtils.getSession(request, userName);
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("index.jsp?bc=" + bc);
     }
 
     public void vistorLoginCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
         sessionUtils.createSession(request, "vistor");
         sessionUtils.getSession(request, "vistor");
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("index.jsp?bc=0");
     }
+
+    public String checkAuth(HttpServletRequest request, HttpServletResponse response, String userName) {
+        int authCode = userDao.getAuth(userName);
+        String userAuth = null;
+
+        if (authCode == 0) {
+            userAuth = "guest";
+        } else if(authCode == 1) {
+            userAuth = "admin";
+        } else if(authCode == 2) {
+            userAuth = "gold";
+        } else if(authCode == 3) {
+            userAuth = "sliver";
+        } else if (authCode == 4) {
+            userAuth = "copper";
+        }
+        return userAuth;
+    }
+
 }

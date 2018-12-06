@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    int bc = 0;
+    int bc = Integer.parseInt(request.getParameter("bc"));
 %>
 <html>
 <head>
@@ -37,7 +37,7 @@
                 %>
                 <tr>
                     <jsp:include page="sub.jsp">
-                        <jsp:param name="bc" value="${bc}"/>
+                        <jsp:param name="bc" value="<%=bc%>"/>
                     </jsp:include>
                 </tr>
                 <%

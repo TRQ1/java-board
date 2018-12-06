@@ -67,4 +67,29 @@ public class UserDao {
         }
         return password;
     }
+
+    public int getAuth(String userId) {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbConnect.connDb();
+        int auth = 0;
+        try {
+            String getAuth = "SELECT authority FROM account WHERE userid=?";
+            pstm = conn.prepareStatement(getAuth);
+            pstm.setString(1, userId);
+            rs = pstm.executeQuery(getAuth);
+
+            if (rs.next()) {
+                auth = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbConnect.close(pstm, conn);
+            dbConnect.resultClose(rs);
+        }
+        return auth;
+    }
+
+
 }
