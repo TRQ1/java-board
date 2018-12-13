@@ -5,20 +5,12 @@
   Time: 1:22 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="include/common.jsp" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
-    int bc = Integer.parseInt(request.getParameter("bc"));
-    if(bc == 0) {
+    int pg = Integer.parseInt(request.getParameter("pg"));
+    System.out.println("pg2 ="+ pg);
 %>
 <jsp:include page="lists.jsp">
-    <jsp:param name="bc" value="0"/>
+    <jsp:param name="pg" value="<%=pg%>"/>
 </jsp:include>
-<%
-    } else if(bc != 0) {
-%>
-<jsp:include page="lists.jsp?id=" >
-    <jsp:param name="bc" value="<%=bc%>"/>
-</jsp:include>
-<%
-    }
-%>

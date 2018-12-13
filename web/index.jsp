@@ -5,9 +5,17 @@
   Time: 11:19 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="include/common.jsp" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
-    int bc = Integer.parseInt(request.getParameter("bc"));
+    Integer pg = 0;
+    if(pg == null)
+    {
+        pg = Integer.parseInt(request.getParameter("pg"));
+    } else {
+        pg = 1;
+    }
+    System.out.println("pg1 ="+ pg);
 %>
 <html>
 <head>
@@ -24,25 +32,11 @@
         </td>
         <td width="1000" valign="top">
             <table witdth="100%" cellpadding="0" cellspacing="0" border="0">
-                <%
-                    if(bc ==0) {
-                %>
                 <tr>
                     <jsp:include page="sub.jsp">
-                        <jsp:param name="bc" value="0"/>
+                        <jsp:param name="pg" value="<%=pg%>"/>
                     </jsp:include>
                 </tr>
-                <%
-                    } else if (bc != 0) {
-                %>
-                <tr>
-                    <jsp:include page="sub.jsp">
-                        <jsp:param name="bc" value="<%=bc%>"/>
-                    </jsp:include>
-                </tr>
-                <%
-                    }
-                %>
             </table>
         </td>
     </tr>

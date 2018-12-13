@@ -1,15 +1,10 @@
 package utils;
 
-import com.sun.deploy.net.HttpRequest;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import utils.CookieUtils;
 import vo.UserVo;
 import dao.UserDao;
-import utils.SessionUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class Login {
@@ -21,25 +16,24 @@ public class Login {
 
         String userGId = "";
         String userGPass = "";
-        int bc = 0;
 
         do {
             UserVo userVo = new UserVo();
             userDao.sqlLogin();
             userGId = userVo.getUserid();
             userGPass = userVo.getUserpasswd();
-            bc = userDao.getAuth(userName);
+            userDao.getAuth(userName);
 
         } while (userName.equals(userGId) && userPasswd.equals(userGPass));
             sessionUtils.createSession(request, userName);
             sessionUtils.getSession(request, userName);
-            response.sendRedirect("index.jsp?bc=" + bc);
+            response.sendRedirect("index.jsp");
     }
 
     public void vistorLoginCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
         sessionUtils.createSession(request, "vistor");
         sessionUtils.getSession(request, "vistor");
-        response.sendRedirect("index.jsp?bc=0");
+        response.sendRedirect("index.jsp");
     }
 
     public String checkAuth(HttpServletRequest request, HttpServletResponse response, String userName) {

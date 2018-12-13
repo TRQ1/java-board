@@ -13,21 +13,17 @@
 <%@ page import="vo.PagingVo" %>
 <%@ page import="vo.BoardVo" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="utils.SessionUtils" %>
 <%
+
     PagingVo pagingVo = new PagingVo();
 
     CheckLength checkLength = new CheckLength();
     BoardDao boardDao = new BoardDao();
-    String sessionId = new SessionUtils().getSession(request, "sessionId");
 
     int id = 0;
     int pg = 1;
-    int bc = 0;
 
-    bc = Integer.parseInt(request.getParameter("bc"));
-
-    if(request.getParameter("pg")!=null) {
+    if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
     }
 
@@ -47,9 +43,6 @@
 </head>
 <body>
 <%
-    if (sessionId != null && sessionId.equals("vistor")) {
-        sessionId = "방문자";
-    }
 
     int total = boardDao.sqlCount();
     int allPage = (int)Math.ceil(total / (double)pageSize); // 전체 게시물 갯수와 페이지에 보여야할 갯수를 나누어서 필요한 전체 페이지 수를 구한다. 나눠진 값에대해 자리 올림을 하여 필요 페이지수를 구한다.
@@ -60,9 +53,6 @@
 
 %>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-    <tr height="5">Welcome to <%=sessionId%>
-        <td width="5"></td>
-    </tr>
     <tr style="text-align:center;">
         <td width="5"></td>
         <td width="20">번호</td>

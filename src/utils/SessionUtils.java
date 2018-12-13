@@ -3,7 +3,7 @@ package utils;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
-public class SessionUtils implements Serializable {
+public class SessionUtils {
 
 
     public void createSession(HttpServletRequest request, String userName) {
@@ -30,7 +30,7 @@ public class SessionUtils implements Serializable {
        return session;
     }
 
-    public static void remove(HttpServletRequest request, String key) {
+    public static void removeSession(HttpServletRequest request, String key) {
         request.getSession().removeAttribute(key);
     }
 }

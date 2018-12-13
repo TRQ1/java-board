@@ -17,6 +17,5 @@
     } else if(userName != null && !userName.equals("vistor")) {
         login.userLoignCheck(request, response, userName, userPasswd);
     }
-
 %>
 

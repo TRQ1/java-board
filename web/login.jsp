@@ -42,25 +42,5 @@
 <form name=unsecurityloginform method=post action="login_do.jsp?userId=vistor">
     <input type="submit" value="비회원 접속"/>
 </form>
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-    <tr height="1" bgcolor="#D2D2D2"><td colspan="6"></td></tr>
-    <tr style="text-align:center;">
-        <td width="200">게시판</td>
-    </tr>
-    <tr height="1" bgcolor="#D2D2D2"><td colspan="6"></td></tr>
-    <tr height="25" align="center">
-        <td width="200">공지사항</td>
-    </tr>
-    <tr height="1" bgcolor="#D2D2D2"><td colspan="6"></td></tr>
-    <tr height="25" align="center">
-        <td width="200">사는이야기</td>
-    </tr>
-    <tr height="1" bgcolor="#D2D2D2"><td colspan="6"></td></tr>
-    <tr height="25" align="center">
-        <td width="200">질문/답변</td>
-    </tr>
-    <tr height="1" bgcolor="#D2D2D2"><td colspan="6"></td></tr>
-</table>
-
 </body>
 </html>
