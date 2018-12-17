@@ -174,9 +174,8 @@ public class BoardDao {
     /**
      * 게시판 글 리스트를 읽어드리기 위한 메소드
      */
-    public ArrayList<BoardVo> sqlBoardList(HttpServletRequest request) {
+    public ArrayList<BoardVo> sqlBoardList(HttpServletRequest request, int bc) {
 
-        int bc = Integer.parseInt(request.getParameter("bc"));
         PreparedStatement pstm = null;
         ResultSet rs = null;
         Connection conn = dbconnect.connDb();
