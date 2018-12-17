@@ -40,9 +40,7 @@ public class Login {
         int authCode = userDao.getAuth(userName);
         String userAuth = null;
 
-        if (authCode == 0) {
-            userAuth = "guest";
-        } else if(authCode == 1) {
+        if(authCode == 1) {
             userAuth = "admin";
         } else if(authCode == 2) {
             userAuth = "gold";
@@ -50,6 +48,8 @@ public class Login {
             userAuth = "sliver";
         } else if (authCode == 4) {
             userAuth = "copper";
+        } else {
+            userAuth = "guest";
         }
         return userAuth;
     }

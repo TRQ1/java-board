@@ -15,7 +15,6 @@
     } else {
         pg = 1;
     }
-    System.out.println("pg1 ="+ pg);
 %>
 <html>
 <head>

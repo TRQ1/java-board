@@ -47,7 +47,7 @@ CREATE TABLE `account` (
 	`id` int (100) NOT NULL AUTO_INCREMENT,
     `userid` varchar(15) NOT NULL,
     `userpasswd` varchar(30) NOT NULL,
-    `authority` varchar(30) NOT NULL,
+    `authority` int(30) NOT NULL,
     primary key(id)
 );
 

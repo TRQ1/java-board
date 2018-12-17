@@ -54,7 +54,7 @@ public class UserDao {
             String sqlPasswd = "SELECT userpasswd FROM account WHERE userid=?";
             pstm = conn.prepareStatement(sqlPasswd);
             pstm.setString(1, userId);
-            rs = pstm.executeQuery(sqlPasswd);
+            rs = pstm.executeQuery();
 
             if (rs.next()) {
                 password = rs.getString(1);
@@ -74,10 +74,10 @@ public class UserDao {
         Connection conn = dbConnect.connDb();
         int auth = 0;
         try {
-            String getAuth = "SELECT authority FROM account WHERE userid=?";
+            String getAuth = "SELECT authority FROM account WHERE userId=?";
             pstm = conn.prepareStatement(getAuth);
             pstm.setString(1, userId);
-            rs = pstm.executeQuery(getAuth);
+            rs = pstm.executeQuery();
 
             if (rs.next()) {
                 auth = rs.getInt(1);

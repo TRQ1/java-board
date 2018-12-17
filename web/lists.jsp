@@ -13,6 +13,7 @@
 <%@ page import="vo.PagingVo" %>
 <%@ page import="vo.BoardVo" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ include file="include/session.jsp"%>
 <%
 
     PagingVo pagingVo = new PagingVo();
@@ -34,6 +35,7 @@
     int pageSize = pagingVo.getPageSize();
     int countPage = pagingVo.getCountPage();
     int end = pagingVo.getEnd();
+
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -70,7 +72,7 @@
     <%
     } else {
 
-        ArrayList<BoardVo> voList = boardDao.sqlBoardList(request);
+        ArrayList<BoardVo> voList = boardDao.sqlBoardList(request, boardCode);
 
         for(int i = pageSize * (pg - 1) ; i < end; i++) {
             BoardVo boardVo = voList.get(i);
