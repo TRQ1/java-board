@@ -22,7 +22,7 @@
     BoardDao boardDao = new BoardDao();
 
     int id = 0;
-    int pg = 1;
+    int pg = 0;
 
     if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
@@ -35,6 +35,7 @@
     int pageSize = pagingVo.getPageSize();
     int countPage = pagingVo.getCountPage();
     int end = pagingVo.getEnd();
+
 
 
 %>
@@ -110,12 +111,12 @@
             <%
                 } else if (postStatus.equals("deleted") && commentCount != 0) {
             %>
-                    <a href="lists.jsp?=id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
+                    <a href="index.jsp?=id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
                         (<%=commentCount%>)
             <%
                 } else if (postStatus.equals("deleted") && commentCount == 0) {
             %>
-                        <a href="lists.jsp?=id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
+                        <a href="index.jsp?=id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
             <%
                 }
             %>
@@ -138,8 +139,8 @@
             <%
                 if(pg > countPage) {
             %>
-            [<a href="lists.jsp?pg=1">◀◀</a>]
-            [<a href="lists.jsp?pg=<%=startPage-1%>">◀</a>]
+            [<a href="index.jsp?pg=1">◀◀</a>]
+            [<a href="index.jsp?pg=<%=startPage-1%>">◀</a>]
             <%
                 }
             %>
@@ -152,7 +153,7 @@
             <%
             }else{
             %>
-            [<a href="lists.jsp?pg=<%=i%>"><%=i %></a>]
+            [<a href="index.jsp?pg=<%=i%>"><%=i %></a>]
             <%
                     }
                 }
@@ -161,8 +162,8 @@
             <%
                 if(endPage < allPage){  // 마지막 페이지가 모든 페이지보다 낮을 경우에는 다음을 눌렀을때 마지막 페이지 + 1을 값으로 페이징을 호출,
             %>
-            [<a href="lists.jsp?pg=<%=endPage+1%>">▶</a>]
-            [<a href="lists.jsp?pg=<%=allPage%>">▶▶</a>]
+            [<a href="index.jsp?pg=<%=endPage+1%>">▶</a>]
+            [<a href="index.jsp?pg=<%=allPage%>">▶▶</a>]
             <%
                 }
                 }

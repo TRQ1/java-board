@@ -10,8 +10,6 @@
 <%@ page import="utils.Login" %>
 <%
     String userId = new SessionUtils().getSession(request, "sessionId");
-    System.out.println(userId);
     String userAuth = new Login().checkAuth(request, response, userId);
-    System.out.println(userAuth);
     int boardCode = 0;
 %>

@@ -10,14 +10,20 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
     int pg = Integer.parseInt(request.getParameter("pg"));
-    System.out.println("userAuth : " + userAuth);
 %>
 <%
     if(userAuth !=null && userAuth == "admin") {
 %>
 <jsp:include page="manager.jsp"/>
 <%
-    } else {
+    } else if(userId != null) {
+%>
+<jsp:include page="lists.jsp">
+    <jsp:param name="pg" value="<%=pg%>"/>
+    <jsp:param name="userAuth" value="<%=userAuth%>"/>
+</jsp:include>
+<%
+    } else if(userId == null) {
 %>
 <jsp:include page="lists.jsp">
     <jsp:param name="pg" value="<%=pg%>"/>
