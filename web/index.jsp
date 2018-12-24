@@ -8,9 +8,10 @@
 <%@include file="include/common.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
-
-    int pg = 1;
-    pg = Integer.parseInt(request.getParameter("pg"));
+    Integer pg = 1;
+    if(request.getParameter("pg") != null) {
+        pg = Integer.parseInt(request.getParameter("pg"));
+    }
 %>
 <html>
 <head>

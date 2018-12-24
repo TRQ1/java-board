@@ -48,7 +48,7 @@ public class Login {
             userAuth = "sliver";
         } else if (authCode == 4) {
             userAuth = "copper";
-        } else {
+        } else if (authCode == 0){
             userAuth = "guest";
         }
         return userAuth;

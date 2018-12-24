@@ -11,5 +11,4 @@
 <%
     String userId = new SessionUtils().getSession(request, "sessionId");
     String userAuth = new Login().checkAuth(request, response, userId);
-    int boardCode = 0;
 %>

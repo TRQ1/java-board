@@ -13,6 +13,7 @@
 <%@ page import="vo.PagingVo" %>
 <%@ page import="vo.BoardVo" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="dao.UserDao" %>
 <%@ include file="include/session.jsp"%>
 <%
 
@@ -23,6 +24,13 @@
 
     int id = 0;
     int pg = 0;
+    int bc = 0;
+
+    if(bc == 0) {
+        bc = new UserDao().getAuth(userId);
+    } else if (request.getParameter("bc") != null){
+        bc = Integer.parseInt(request.getParameter("bc"));
+    }
 
     if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
@@ -73,7 +81,7 @@
     <%
     } else {
 
-        ArrayList<BoardVo> voList = boardDao.sqlBoardList(request, boardCode);
+        ArrayList<BoardVo> voList = boardDao.sqlBoardList(request, bc);
 
         for(int i = pageSize * (pg - 1) ; i < end; i++) {
             BoardVo boardVo = voList.get(i);
@@ -174,7 +182,7 @@
     <tr><td colspan="4" height="5"></td></tr>
     <tr align="right">
         <td><input type=button value="글쓰기"
-                   OnClick="window.location='write.jsp?id=<%=id%>&pg=<%=pg%>'"></td>
+                   OnClick="window.location='write.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>'"></td>
     </tr>
 </table>
 </table>

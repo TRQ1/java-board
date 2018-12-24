@@ -1,4 +1,4 @@
-<%--
+<%@ page import="javax.persistence.criteria.CriteriaBuilder" %><%--
   Created by IntelliJ IDEA.
   User: TRQ1
   Date: 2018. 9. 19.
@@ -48,6 +48,7 @@ function writeCheck()
 <%
     int idx = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
+    int bc = Integer.parseInt(request.getParameter("bc"));
 %>
 <html>
 <head>
@@ -55,7 +56,7 @@ function writeCheck()
 </head>
 <body>
 <table>
-    <form name=writeform method=post action="write_do.jsp?id=<%=idx%>&pg=<%=pg%>">
+    <form name=writeform method=post action="write_do.jsp?id=<%=idx%>&pg=<%=pg%>&bc=<%=bc%>">
     <tr>
         <td>
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -126,6 +127,7 @@ function writeCheck()
             </table>
         </td>
     </tr>
+    </form>
 </table>
 </body>
 </html>
