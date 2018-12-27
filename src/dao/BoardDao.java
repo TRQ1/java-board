@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import utils.SessionUtils;
+import vo.BoardViewVo;
 import vo.BoardVo;
 
 public class BoardDao {
@@ -539,7 +540,8 @@ public class BoardDao {
 
 
 
-    public void addBoardConfigEdit(HttpServletRequest request) {
+    public void addBoardConfigEdit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int addCnt = 0;
         String boardName = request.getParameter("boardName");
         int login = Integer.parseInt(request.getParameter("login"));
         int admin = Integer.parseInt(request.getParameter("admin"));
@@ -549,20 +551,35 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlInsert = "INSERT INTO board(boardName,login,admin,comment,reply) VALUES(?,?,?,?,?)";
+            String sqlInsert = "INSERT INTO boardConfig(boardName,login,admin,comment,reply) VALUES(?,?,?,?,?)";
             pstm = conn.prepareStatement(sqlInsert);
             pstm.setString(1, boardName);
             pstm.setInt(2, login);
             pstm.setInt(3, admin);
             pstm.setInt(4, comment);
             pstm.setInt(5, reply);
-            pstm.executeUpdate();
+            addCnt = pstm.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
             dbconnect.close(pstm, conn);
         }
+
+        PrintWriter out = response.getWriter();
+        if (addCnt == 1) {
+            out.print("<script language=javascript>");
+            out.print("self.window.alert(\"게시판이 생성되었습니다..\");");
+            out.print("location.href = \"index.jsp\";");
+            out.print("</script>");
+            out.close();
+        } else {
+            out.print("<script language=javascript>");
+            out.print(" self.window.alert(\"실패\");");
+            out.print("location.href=\"javascript:history.back()\";");
+            out.print("</script>");
+        }
+        out.close();
     }
 
     public void updateBoardConfigEdit(HttpServletRequest request, int boardCode) {
@@ -575,7 +592,7 @@ public class BoardDao {
         PreparedStatement pstm = null;
         Connection conn = dbconnect.connDb();
         try {
-            String sqlUpdate = "UPDATE board SET boardName=?, login=?, admin=?, comment=?, reply=? where boardCode =?";
+            String sqlUpdate = "UPDATE boardConfig SET boardName=?, login=?, admin=?, comment=?, reply=? where boardCode =?";
             pstm = conn.prepareStatement(sqlUpdate);
             pstm.setString(1, boardName);
             pstm.setInt(2, login);
@@ -615,5 +632,58 @@ public class BoardDao {
             dbconnect.resultClose(rs);
         }
         return boardCode;
+    }
+
+    public ArrayList<BoardViewVo> boardConfigList() {
+
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+
+        ArrayList<BoardViewVo> boardConfigList = new ArrayList<BoardViewVo>();
+
+        try {
+            String configList = "SELECT boardName, login, admin, comment, reply from boardConfig";
+            pstm = conn.prepareStatement(configList);
+            rs = pstm.executeQuery();
+            while(rs.next()) {
+                BoardViewVo boardViewVo = new BoardViewVo();
+                boardViewVo.setBoardName(rs.getString(1));
+                boardViewVo.setLogin(rs.getInt(2));
+                boardViewVo.setAdmin(rs.getInt(3));
+                boardViewVo.setComment(rs.getInt(4));
+                boardViewVo.setReply(rs.getInt(5));
+                boardConfigList.add(boardViewVo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return boardConfigList;
+    }
+
+    public int boardListCount() {
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        Connection conn = dbconnect.connDb();
+        int total = 0;
+        try {
+            String sqlCount = "SELECT COUNT(*) FROM boardConfig";
+            pstm = conn.prepareStatement(sqlCount);
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            dbconnect.close(pstm, conn);
+            dbconnect.resultClose(rs);
+        }
+        return total;
     }
 }

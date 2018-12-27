@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ page import="dao.BoardDao" %>
 <%@include file="include/common.jsp"%>
+<%@ include file="include/session.jsp"%>
 <%
     BoardDao boardDao = new BoardDao();
     boardDao.sqlInsert(request, response, "post");

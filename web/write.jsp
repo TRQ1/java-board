@@ -1,4 +1,4 @@
-<%@ page import="javax.persistence.criteria.CriteriaBuilder" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: TRQ1
   Date: 2018. 9. 19.

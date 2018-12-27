@@ -1,31 +1,58 @@
 package vo;
 
 public class BoardViewVo {
-    int id;
-    String boardname;
-    String status;
+    int boardCode;
+    String boardName;
+    int admin;
+    int login;
+    int comment;
+    int reply;
 
-    public int getId() {
-        return id;
+    public int getBoardCode() {
+        return boardCode;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBoardCode(int boardCode) {
+        this.boardCode = boardCode;
     }
 
-    public String getBoardname() {
-        return boardname;
+    public String getBoardName() {
+        return boardName;
     }
 
-    public void setBoardname(String boardname) {
-        this.boardname = boardname;
+    public void setBoardName(String boardName) {
+        this.boardName = boardName;
     }
 
-    public String getStatus() {
-        return status;
+    public int getAdmin() {
+        return admin;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+
+    public int getLogin() {
+        return login;
+    }
+
+    public void setLogin(int login) {
+        this.login = login;
+    }
+
+    public int getComment() {
+        return comment;
+    }
+
+    public void setComment(int comment) {
+        this.comment = comment;
+    }
+
+    public int getReply() {
+        return reply;
+    }
+
+    public void setReply(int reply) {
+        this.reply = reply;
     }
 }
