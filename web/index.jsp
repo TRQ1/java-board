@@ -9,9 +9,15 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
     Integer pg = 1;
+    int bc = 0;
+
     if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
     }
+    if (request.getParameter("bc") != null){
+        bc = Integer.parseInt(request.getParameter("bc"));
+    }
+    System.out.println("bc0 : " + bc);
 %>
 <html>
 <head>
@@ -30,6 +36,7 @@
             <table witdth="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                     <jsp:include page="sub.jsp">
+                        <jsp:param name="bc" value="<%=bc%>" />
                         <jsp:param name="pg" value="<%=pg%>"/>
                     </jsp:include>
                 </tr>

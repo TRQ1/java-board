@@ -16,7 +16,7 @@
 <%@ page import="dao.UserDao" %>
 <%@ include file="include/session.jsp"%>
 <%
-
+try {
     PagingVo pagingVo = new PagingVo();
 
     CheckLength checkLength = new CheckLength();
@@ -26,18 +26,25 @@
     int pg = 0;
     int bc = 0;
 
-    if(bc == 0) {
-        bc = new UserDao().getAuth(userId);
-    } else if (request.getParameter("bc") != null){
+    bc = Integer.parseInt(request.getParameter("bc"));
+    System.out.println("bc1.1 : " + bc);
+    System.out.println("1");
+    if(request.getParameter("bc") != null) {
         bc = Integer.parseInt(request.getParameter("bc"));
+    } else if(bc == 0){
+        bc = new UserDao().getAuth(userId);
     }
+    System.out.println("bc1  : " + bc);
 
     if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
     }
 
+    System.out.println("2");
     PagingUtil pagingUtil = new PagingUtil();
     pagingUtil.setPaging(pagingVo, pg, 5, 6);
+
+    System.out.println("3");
     int endPage = pagingVo.getEndPage();
     int startPage = pagingVo.getStartPage();
     int pageSize = pagingVo.getPageSize();
@@ -56,6 +63,7 @@
 <%
 
     int total = boardDao.sqlCount();
+    System.out.println("total: " + total);
     int allPage = (int)Math.ceil(total / (double)pageSize); // 전체 게시물 갯수와 페이지에 보여야할 갯수를 나누어서 필요한 전체 페이지 수를 구한다. 나눠진 값에대해 자리 올림을 하여 필요 페이지수를 구한다.
 
     if(endPage > allPage) { //마지막 페이지가 모든 페이지 값보다 클시에 마지막 페이지는 총 페이지 수로 대체
@@ -73,7 +81,10 @@
         <td width="7"></td>
     </tr>
     <%
-    if(total == 0) { // total 값이 0일 경우 등록된 글이 없음 출력
+
+    System.out.println("bc2  : " + bc);
+    ArrayList<BoardVo> voList = boardDao.sqlBoardList(request, bc);
+    if(voList == null || voList.size() <=0 ) { // total 값이 0일 경우 등록된 글이 없음 출력
     %>
     <tr align="center" bgcolor="#FFFFFF" height="30">
         <td colspan="6">등록된 글이 없습니다.</td>
@@ -81,9 +92,13 @@
     <%
     } else {
 
-        ArrayList<BoardVo> voList = boardDao.sqlBoardList(request, bc);
+        System.out.println("4");
+
+        System.out.println("voList.size: " + voList.size());
+        System.out.println("end: " + end);
 
         for(int i = pageSize * (pg - 1) ; i < end; i++) {
+            System.out.println("i: " + 1);
             BoardVo boardVo = voList.get(i);
             id = boardVo.getId();
             int indent = boardVo.getIndent();
@@ -111,7 +126,7 @@
             <%
                 if (postStatus == null && commentCount != 0) {
             %>
-            <a href="detail.jsp?id=<%=id%>&pg=<%=pg%>"><%=title %> (<%=commentCount%>)
+            <a href="detail.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>"><%=title %> (<%=commentCount%>)
             <%
                 } else if(postStatus == null && commentCount == 0) {
             %>
@@ -147,8 +162,8 @@
             <%
                 if(pg > countPage) {
             %>
-            [<a href="index.jsp?pg=1">◀◀</a>]
-            [<a href="index.jsp?pg=<%=startPage-1%>">◀</a>]
+            [<a href="index.jsp?pg=1&bc=<%=bc%>">◀◀</a>]
+            [<a href="index.jsp?pg=<%=startPage-1%>&bc=<%=bc%>">◀</a>]
             <%
                 }
             %>
@@ -161,7 +176,7 @@
             <%
             }else{
             %>
-            [<a href="index.jsp?pg=<%=i%>"><%=i %></a>]
+            [<a href="index.jsp?pg=<%=i%>&bc=<%=bc%>"><%=i %></a>]
             <%
                     }
                 }
@@ -170,8 +185,8 @@
             <%
                 if(endPage < allPage){  // 마지막 페이지가 모든 페이지보다 낮을 경우에는 다음을 눌렀을때 마지막 페이지 + 1을 값으로 페이징을 호출,
             %>
-            [<a href="index.jsp?pg=<%=endPage+1%>">▶</a>]
-            [<a href="index.jsp?pg=<%=allPage%>">▶▶</a>]
+            [<a href="index.jsp?pg=<%=endPage+1%>&bc=<%=bc%>">▶</a>]
+            [<a href="index.jsp?pg=<%=allPage%>&bc=<%=bc%>">▶▶</a>]
             <%
                 }
                 }
@@ -188,3 +203,9 @@
 </table>
 </body>
 </html>
+<%
+    } catch (Exception e) {
+        out.println("e: " + e);
+    }
+
+%>

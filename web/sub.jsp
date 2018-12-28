@@ -14,6 +14,7 @@
     if(request.getParameter("bc") != null) {
         bc = Integer.parseInt(request.getParameter("bc"));
     }
+    System.out.println("bc0.0 : " + bc);
 %>
 <%
     if(userAuth !=null && userAuth == "admin" && bc == 0) {
@@ -24,6 +25,7 @@
 %>
 <jsp:include page="lists.jsp">
     <jsp:param name="pg" value="<%=pg%>"/>
+    <jsp:param name="bc" value="<%=bc%>"/>
     <jsp:param name="userAuth" value="<%=userAuth%>"/>
 </jsp:include>
 <%
@@ -31,6 +33,7 @@
 %>
 <jsp:include page="lists.jsp">
     <jsp:param name="pg" value="<%=pg%>"/>
+    <jsp:param name="bc" value="<%=bc%>"/>
 </jsp:include>
 <%
     }
