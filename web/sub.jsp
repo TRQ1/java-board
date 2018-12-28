@@ -9,10 +9,14 @@
 <%@ include file="include/session.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
+    int bc = 0;
     int pg = Integer.parseInt(request.getParameter("pg"));
+    if(request.getParameter("bc") != null) {
+        bc = Integer.parseInt(request.getParameter("bc"));
+    }
 %>
 <%
-    if(userAuth !=null && userAuth == "admin") {
+    if(userAuth !=null && userAuth == "admin" && bc == 0) {
 %>
 <jsp:include page="manager.jsp"/>
 <%

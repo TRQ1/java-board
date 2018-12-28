@@ -643,16 +643,17 @@ public class BoardDao {
         ArrayList<BoardViewVo> boardConfigList = new ArrayList<BoardViewVo>();
 
         try {
-            String configList = "SELECT boardName, login, admin, comment, reply from boardConfig";
+            String configList = "SELECT boardCode, boardName, login, admin, comment, reply from boardConfig";
             pstm = conn.prepareStatement(configList);
             rs = pstm.executeQuery();
             while(rs.next()) {
                 BoardViewVo boardViewVo = new BoardViewVo();
-                boardViewVo.setBoardName(rs.getString(1));
-                boardViewVo.setLogin(rs.getInt(2));
-                boardViewVo.setAdmin(rs.getInt(3));
-                boardViewVo.setComment(rs.getInt(4));
-                boardViewVo.setReply(rs.getInt(5));
+                boardViewVo.setBoardCode(rs.getInt(1));
+                boardViewVo.setBoardName(rs.getString(2));
+                boardViewVo.setLogin(rs.getInt(3));
+                boardViewVo.setAdmin(rs.getInt(4));
+                boardViewVo.setComment(rs.getInt(5));
+                boardViewVo.setReply(rs.getInt(6));
                 boardConfigList.add(boardViewVo);
             }
 

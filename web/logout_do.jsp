@@ -11,6 +11,7 @@
 <%
     SessionUtils sessionUtils = new SessionUtils();
     String sessionId = sessionUtils.getSession(request, "sessionId");
+    System.out.println(sessionId);
     sessionUtils.removeSession(request, sessionId);
     PrintWriter out1 = response.getWriter();
     out1.print("<script language=javascript>");
