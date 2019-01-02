@@ -321,7 +321,7 @@ public class BoardDao {
 
         int id = Integer.parseInt(request.getParameter("id"));
         int pg = Integer.parseInt(request.getParameter("pg"));
-        int boardCode = Integer.parseInt(request.getParameter("bc"));
+        int bc = Integer.parseInt(request.getParameter("bc"));
 
         BoardVo boardVo = new BoardVo();
         String userId = new SessionUtils().getSession(request, "sessionId");
@@ -350,7 +350,7 @@ public class BoardDao {
                 pstm.setString(5, kindType);
             }
             pstm.setInt(6, parentInsert + 1);
-            pstm.setInt(7, boardCode);
+            pstm.setInt(7, bc);
             insertCnt = pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -362,7 +362,7 @@ public class BoardDao {
         if (insertCnt == 1) {
             out.print("<script language=javascript>");
             out.print("self.window.alert(\"입력한 글을 저장하였습니다.\");");
-                    out.print("location.href = \"lists.jsp?id=" + id + "&pg=" + pg + "\";");
+                    out.print("location.href = \"index.jsp?id=" + id + "&pg=" + pg + "&bc=" + bc + "\";");
             out.print("</script>");
             out.close();
         } else {

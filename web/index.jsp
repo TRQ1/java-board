@@ -9,13 +9,25 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
     Integer pg = 1;
+    int id = 0;
     int bc = 0;
+    int w = 0;
+    int d = 0;
 
+    if(request.getParameter("id") != null) {
+        pg = Integer.parseInt(request.getParameter("id"));
+    }
     if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
     }
     if (request.getParameter("bc") != null){
         bc = Integer.parseInt(request.getParameter("bc"));
+    }
+    if (request.getParameter("w") != null) {
+        w = Integer.parseInt(request.getParameter("w"));
+    }
+    if (request.getParameter("d") != null) {
+        d = Integer.parseInt(request.getParameter("d"));
     }
     System.out.println("bc0 : " + bc);
 %>
@@ -34,11 +46,39 @@
         </td>
         <td width="1000" valign="top">
             <table witdth="100%" cellpadding="0" cellspacing="0" border="0">
+                <%
+                   if(w == 1)  {
+                %>
                 <tr>
                     <jsp:include page="sub.jsp">
                         <jsp:param name="bc" value="<%=bc%>" />
+                        <jsp:param name="id" value="<%=id%>" />
                         <jsp:param name="pg" value="<%=pg%>"/>
+                        <jsp:param name="w" value="<%=w%>"/>
                     </jsp:include>
+                </tr>
+                <%
+                    } else if (d == 1) {
+                %>
+                <tr>
+                    <jsp:include page="sub.jsp">
+                        <jsp:param name="bc" value="<%=bc%>" />
+                        <jsp:param name="id" value="<%=id%>" />
+                        <jsp:param name="pg" value="<%=pg%>"/>
+                        <jsp:param name="d" value="<%=d%>"/>
+                    </jsp:include>
+                <%
+                    } else {
+
+                %>
+                <jsp:include page="sub.jsp">
+                    <jsp:param name="bc" value="<%=bc%>" />
+                    <jsp:param name="id" value="<%=id%>" />
+                    <jsp:param name="pg" value="<%=pg%>"/>
+                </jsp:include>
+                <%
+                    }
+                %>
                 </tr>
             </table>
         </td>
