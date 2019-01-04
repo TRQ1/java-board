@@ -33,20 +33,13 @@
     if (request.getParameter("condition") != null){
         condition = request.getParameter("condition");
     }
+        System.out.println("w2 : " + w);
+        System.out.println(userId);
 %>
 <%
     if(userAuth !=null && userAuth == "admin" && bc == 0) {
 %>
 <jsp:include page="manager.jsp"/>
-<%
-    } else if(userId != null) {
-%>
-<jsp:include page="lists.jsp">
-    <jsp:param name="id" value="<%=id%>" />
-    <jsp:param name="pg" value="<%=pg%>"/>
-    <jsp:param name="bc" value="<%=bc%>"/>
-    <jsp:param name="userAuth" value="<%=userAuth%>"/>
-</jsp:include>
 <%
     } else if(w == 1) {
         System.out.println("w3 :" + w);
@@ -63,6 +56,15 @@
     <jsp:param name="id" value="<%=id%>" />
     <jsp:param name="pg" value="<%=pg%>"/>
     <jsp:param name="bc" value="<%=bc%>"/>
+</jsp:include>
+<%
+   } else if(userId != null) {
+%>
+<jsp:include page="lists.jsp">
+    <jsp:param name="id" value="<%=id%>" />
+    <jsp:param name="pg" value="<%=pg%>"/>
+    <jsp:param name="bc" value="<%=bc%>"/>
+    <jsp:param name="userAuth" value="<%=userAuth%>"/>
 </jsp:include>
 <%
     } else {

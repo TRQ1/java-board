@@ -10,9 +10,7 @@
 <%@ page import="java.io.PrintWriter" %>
 <%
     SessionUtils sessionUtils = new SessionUtils();
-    String sessionId = sessionUtils.getSession(request, "sessionId");
-    System.out.println(sessionId);
-    sessionUtils.removeSession(request, sessionId);
+    sessionUtils.removeSession(request, "sessionId");
     PrintWriter out1 = response.getWriter();
     out1.print("<script language=javascript>");
     out1.print(" self.window.alert(\"로그아웃이 되었습니다.\");");

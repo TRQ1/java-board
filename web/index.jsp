@@ -37,6 +37,7 @@
     if (request.getParameter("condition") != null){
         condition = request.getParameter("condition");
     }
+    System.out.println("w : " + 1);
 %>
 <html>
 <head>

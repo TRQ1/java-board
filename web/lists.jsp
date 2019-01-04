@@ -47,8 +47,6 @@
     if (request.getParameter("condition") != null){
         condition = request.getParameter("condition");
     }
-    System.out.println(opt);
-    System.out.println(condition);
 
     PagingUtil pagingUtil = new PagingUtil();
     pagingUtil.setPaging(pagingVo, pg, 5, 6);
@@ -58,8 +56,6 @@
     int pageSize = pagingVo.getPageSize();
     int countPage = pagingVo.getCountPage();
     int end = pagingVo.getEnd();
-
-
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
