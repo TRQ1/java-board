@@ -17,16 +17,17 @@
 <%
     BoardDao boardDao = new BoardDao();
     CommentDao commentDao = new CommentDao();
-    int idx = Integer.parseInt(request.getParameter("id"));
+    int id = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
+    int bc = Integer.parseInt(request.getParameter("bc"));
 
     int cid = 0;
     String author = null;
     String title = null;
     String content = null;
-    int commentTotal =  0;
+    int commentTotal = 0;
 
-    ArrayList<BoardVo> boardList = boardDao.sqlBoardDetailList(idx);
+    ArrayList<BoardVo> boardList = boardDao.sqlBoardDetailList(id);
     int size = boardList.size()-1;
     BoardVo boardVo = boardList.get(size);
     author = boardVo.getAuthor();
@@ -88,26 +89,26 @@
                            if(userId != null && userId.equals(author)) {
                         %>
                         <input type=button value="수정" name=id
-                               OnClick="window.location='modify.jsp?id=<%=idx%>&pg=<%=pg%>'">
+                               OnClick="window.location='modify.jsp?id=<%=id%>&pg=<%=pg%>'">
                         <input type=button value="삭제" name=id
-                               OnClick="window.location='delete_account_do.jsp?id=<%=idx%>&pg=<%=pg%>'">
+                               OnClick="window.location='delete_account_do.jsp?id=<%=id%>&pg=<%=pg%>'">
                         <input type=button value="목록"
                                OnClick="window.location='lists.jsp?pg=<%=pg%>'">
                             <%
                          } else if(userId != null && !userId.equals("vistor") && !userId.equals(author)) {
                         %>
                         <input type=button value="답글" name=id
-                               OnClick="window.location='reply.jsp?id=<%=idx%>&pg=<%=pg%>'">
+                               OnClick="window.location='reply.jsp?id=<%=id%>&pg=<%=pg%>'">
                         <input type=button value="목록" OnClick="window.location='lists.jsp?pg=<%=pg%>'">
                             <%
                          } else {
                         %>
                         <input type=button value="수정" name=id
-                               OnClick="window.location='modify_check.jsp?id=<%=idx%>&pg=<%=pg%>'">
+                               OnClick="window.location='modify_check.jsp?id=<%=id%>&pg=<%=pg%>'">
                         <input type=button value="답글" name=id
-                               OnClick="window.location='reply.jsp?id=<%=idx%>&pg=<%=pg%>'">
+                               OnClick="window.location='reply.jsp?id=<%=id%>&pg=<%=pg%>'">
                         <input type=button value="삭제" name=id
-                               OnClick="window.location='delete.jsp?id=<%=idx%>&pg=<%=pg%>'">
+                               OnClick="window.location='delete.jsp?id=<%=id%>&pg=<%=pg%>'">
                         <input type=button value="목록" OnClick="window.location='lists.jsp?pg=<%=pg%>'">
                             <%
                                 }
@@ -121,7 +122,7 @@
                         if (userId != null && !userId.equals("vistor")) {
                 %>
                 <form name=writecommentcheckform method=post
-                      action="write_comment_do.jsp?id=<%=idx%>&pg=<%=pg%>&author=<%=userId%>">
+                      action="write_comment_do.jsp?id=<%=id%>&pg=<%=pg%>&author=<%=userId%>">
                     <tr>
                         <td align="right" width="76">사용자:</td>
                         <td width="319" name="userId"><%=userId%>
@@ -139,7 +140,7 @@
                         } else {
                 %>
                 <form name=writecommentcheckform method=post
-                      action="write_vistor_comment_do.jsp?id=<%=idx%>&pg=<%=pg%>">
+                      action="write_vistor_comment_do.jsp?id=<%=id%>&pg=<%=pg%>">
                     <tr>
                         <td align="right" width="76">사용자:</td>
                         <td><input type="text" name="authorComment" width="319"/></td>
@@ -171,7 +172,7 @@
                 </tr>
                 <%
                 }
-                    ArrayList<CommentVo> commentList = commentDao.sqlBoardDetailList(idx);
+                    ArrayList<CommentVo> commentList = commentDao.sqlBoardDetailList(id);
 
                     for(int i = 0; i <= commentTotal - 1; i++) {
                         CommentVo commentVo = commentList.get(i);
@@ -191,11 +192,11 @@
                     %>
                     <td align="right">
                         <input type=button value="댓글 수정"
-                               OnClick="window.location='comment_modify_check.jsp?id=<%=idx%>&pg=<%=pg%>&content=<%=contentComment%>&author=<%=authorComment%>'">
+                               OnClick="window.location='comment_modify_check.jsp?id=<%=id%>&pg=<%=pg%>&content=<%=contentComment%>&author=<%=authorComment%>'">
                     </td>
                     <td align="right">
                         <input type=button value="댓글 삭제"
-                               OnClick="window.location='comment_delete.jsp?id=<%=idx%>&pg=<%=pg%>&content=<%=contentComment%>&cid=<%=cid%>'">
+                               OnClick="window.location='comment_delete.jsp?id=<%=id%>&pg=<%=pg%>&content=<%=contentComment%>&cid=<%=cid%>'">
 
                     </td>
                     <%
@@ -203,11 +204,11 @@
                     %>
                     <td align="right">
                         <input type=button value="댓글 수정"
-                               OnClick="window.location='comment_modify.jsp?id=<%=idx%>&pg=<%=pg%>&content=<%=contentComment%>&author=<%=authorComment%>&cid=<%=cid%>'">
+                               OnClick="window.location='comment_modify.jsp?id=<%=id%>&pg=<%=pg%>&content=<%=contentComment%>&author=<%=authorComment%>&cid=<%=cid%>'">
                     </td>
                     <td align="right">
                         <input type=button value="댓글 삭제"
-                               OnClick="window.location='comment_delete_do.jsp?id=<%=idx%>&pg=<%=pg%>&content=<%=contentComment%>'">
+                               OnClick="window.location='comment_delete_do.jsp?id=<%=id%>&pg=<%=pg%>&content=<%=contentComment%>'">
                     </td>
                     <%
                         }

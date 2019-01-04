@@ -16,6 +16,7 @@
 <%@ page import="dao.UserDao" %>
 <%@ include file="include/session.jsp"%>
 <%
+    try {
     PagingVo pagingVo = new PagingVo();
 
     CheckLength checkLength = new CheckLength();
@@ -24,8 +25,12 @@
     int id = 0;
     int pg = 0;
     int bc = 0;
+    int opt = 0;
+    String condition = null;
 
+    id = Integer.parseInt(request.getParameter("id"));
     bc = Integer.parseInt(request.getParameter("bc"));
+
     if(request.getParameter("bc") != null) {
         bc = Integer.parseInt(request.getParameter("bc"));
     } else if(bc == 0){
@@ -35,6 +40,15 @@
     if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
     }
+
+    if (request.getParameter("opt") != null){
+        opt = Integer.parseInt(request.getParameter("opt"));
+    }
+    if (request.getParameter("condition") != null){
+        condition = request.getParameter("condition");
+    }
+    System.out.println(opt);
+    System.out.println(condition);
 
     PagingUtil pagingUtil = new PagingUtil();
     pagingUtil.setPaging(pagingVo, pg, 5, 6);
@@ -83,7 +97,6 @@
     </tr>
     <%
     } else {
-
         for(int i = pageSize * (pg - 1); i < end; i++) {
             BoardVo boardVo = voList.get(i);
             id = boardVo.getId();
@@ -112,20 +125,21 @@
             <%
                 if (postStatus == null && commentCount != 0) {
             %>
-            <a href="detail.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>"><%=title %> (<%=commentCount%>)
+            <a href="index.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>&d=1"><%=title %> (<%=commentCount%>)
             <%
                 } else if(postStatus == null && commentCount == 0) {
+                    System.out.println(id);
             %>
-                <a href="detail.jsp?id=<%=id%>&pg=<%=pg%>"><%=title %>
+                <a href="index.jsp?id=<%=id%>&pg=<%=pg%><%=bc%>&d=1""><%=title %>
             <%
                 } else if (postStatus.equals("deleted") && commentCount != 0) {
             %>
-                    <a href="index.jsp?=id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
+                    <a href="index.jsp?id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
                         (<%=commentCount%>)
             <%
                 } else if (postStatus.equals("deleted") && commentCount == 0) {
             %>
-                        <a href="index.jsp?=id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
+                        <a href="index.jsp?id=<%=id%>&pg=<%=pg%>" onClick="alert('삭제된 글입니다.')"><%=title %>
             <%
                 }
             %>
@@ -179,8 +193,25 @@
             %>
         </td>
     </tr>
+
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr><td colspan="4" height="5"></td></tr>
+    <tr align="center">
+        <br>
+        <div id="searchForm">
+            <form name=searchForm method=post action=index.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>>
+                <select name="opt">
+                    <option value="1">제목</option>
+                    <option value="2">내용</option>
+                    <option value="3">제목+내용</option>
+                    <option value="4">글쓴이</option>
+                </select>
+                <input type="text" size="20" name="condition"/>&nbsp;
+                <input type="submit" value="검색"/>
+            </form>
+        </div>
+        </div>
+    </tr>
     <tr align="right">
         <td><input type=button value="글쓰기"
                    OnClick="window.location='index.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>&w=1'"></td>
@@ -189,3 +220,8 @@
 </table>
 </body>
 </html>
+<%
+    } catch (Exception e) {
+        System.out.println("e: " + e);
+    }
+%>

@@ -9,14 +9,15 @@
 <%@ include file="include/session.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
+    try {
     int bc = 0;
-    int id = 0;
     int w = 0;
     int d = 0;
+    int opt = 0;
+    String condition = null;
+    int id = Integer.parseInt(request.getParameter("id"));
     int pg = Integer.parseInt(request.getParameter("pg"));
-    if(request.getParameter("id") != null) {
-        id = Integer.parseInt(request.getParameter("id"));
-    }
+
     if(request.getParameter("bc") != null) {
         bc = Integer.parseInt(request.getParameter("bc"));
     }
@@ -26,8 +27,12 @@
     if (request.getParameter("d") != null) {
         d = Integer.parseInt(request.getParameter("d"));
     }
-    System.out.println("d : " + d);
-    System.out.println("w : " + w);
+    if (request.getParameter("opt") != null){
+        opt = Integer.parseInt(request.getParameter("opt"));
+    }
+    if (request.getParameter("condition") != null){
+        condition = request.getParameter("condition");
+    }
 %>
 <%
     if(userAuth !=null && userAuth == "admin" && bc == 0) {
@@ -43,16 +48,8 @@
     <jsp:param name="userAuth" value="<%=userAuth%>"/>
 </jsp:include>
 <%
-    } else if(userId == null) {
-%>
-<jsp:include page="lists.jsp">
-    <jsp:param name="id" value="<%=id%>" />
-    <jsp:param name="pg" value="<%=pg%>"/>
-    <jsp:param name="bc" value="<%=bc%>"/>
-</jsp:include>
-<%
     } else if(w == 1) {
-
+        System.out.println("w3 :" + w);
 %>
 <jsp:include page="write.jsp">
     <jsp:param name="id" value="<%=id%>" />
@@ -68,5 +65,18 @@
     <jsp:param name="bc" value="<%=bc%>"/>
 </jsp:include>
 <%
+    } else {
+%>
+<jsp:include page="lists.jsp">
+    <jsp:param name="id" value="<%=id%>" />
+    <jsp:param name="pg" value="<%=pg%>"/>
+    <jsp:param name="bc" value="<%=bc%>"/>
+    <jsp:param name="opt" value="<%=opt%>"/>
+    <jsp:param name="condition" value="<%=condition%>"/>
+</jsp:include>
+<%
+    }
+    }catch (Exception e) {
+        System.out.println(e);
     }
 %>

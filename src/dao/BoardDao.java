@@ -181,26 +181,108 @@ public class BoardDao {
         ResultSet rs = null;
         Connection conn = dbconnect.connDb();
 
+        int opt = 0;
+        String condition = "";
+        if(request.getParameter("opt") != null) {
+            opt = Integer.parseInt(request.getParameter("opt"));
+        }
+        if(request.getParameter("condition") != null) {
+            condition = request.getParameter("condition");
+        }
+        System.out.println("optf : " + opt);
         ArrayList<BoardVo> boardList = new ArrayList<BoardVo>();
-
         try {
-            String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A where boardCode = ? order by parent DESC, step ASC";
-            pstm = conn.prepareStatement(sqlList);
-            pstm.setInt(1, bc);
-            rs = pstm.executeQuery();
-            while(rs.next()) {
-                BoardVo boardVo = new BoardVo();
-                boardVo.setId(rs.getInt(1));
-                boardVo.setAuthor(rs.getString(2));
-                boardVo.setTitle(rs.getString(3));
-                boardVo.setTodate(rs.getDate(4));
-                boardVo.setIndent(rs.getInt(5));
-                boardVo.setCommentCnt(rs.getInt(6));
-                boardVo.setPostStatus(rs.getString(7));
+            if (opt == 0) {
+                String sqlList = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A where boardCode = ? order by parent DESC, step ASC";
+                pstm = conn.prepareStatement(sqlList);
+                pstm.setInt(1, bc);
+                rs = pstm.executeQuery();
+                while (rs.next()) {
+                    BoardVo boardVo = new BoardVo();
+                    boardVo.setId(rs.getInt(1));
+                    boardVo.setAuthor(rs.getString(2));
+                    boardVo.setTitle(rs.getString(3));
+                    boardVo.setTodate(rs.getDate(4));
+                    boardVo.setIndent(rs.getInt(5));
+                    boardVo.setCommentCnt(rs.getInt(6));
+                    boardVo.setPostStatus(rs.getString(7));
 
-                boardList.add(boardVo);
+                    boardList.add(boardVo);
+                }
+            } else if (opt == 1) {
+                String sqlTitle = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A where boardCode = ? and title like ? order by parent DESC, step ASC";
+                System.out.println(sqlTitle);
+                pstm = conn.prepareStatement(sqlTitle);
+                pstm.setInt(1, bc);
+                pstm.setString(2,"%" + condition + "%");
+                System.out.println(condition);
+                rs = pstm.executeQuery();
+                while (rs.next()) {
+                    BoardVo boardVo = new BoardVo();
+                    boardVo.setId(rs.getInt(1));
+                    boardVo.setAuthor(rs.getString(2));
+                    boardVo.setTitle(rs.getString(3));
+                    boardVo.setTodate(rs.getDate(4));
+                    boardVo.setIndent(rs.getInt(5));
+                    boardVo.setCommentCnt(rs.getInt(6));
+                    boardVo.setPostStatus(rs.getString(7));
+
+                    boardList.add(boardVo);
+                }
+            } else if (opt == 2) {
+                String sqlContent = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A where boardCode = ? and content like ? order by parent DESC, step ASC";
+                pstm = conn.prepareStatement(sqlContent);
+                pstm.setInt(1, bc);
+                pstm.setString(2, "%" + condition + "%");
+                rs = pstm.executeQuery();
+                while (rs.next()) {
+                    BoardVo boardVo = new BoardVo();
+                    boardVo.setId(rs.getInt(1));
+                    boardVo.setAuthor(rs.getString(2));
+                    boardVo.setTitle(rs.getString(3));
+                    boardVo.setTodate(rs.getDate(4));
+                    boardVo.setIndent(rs.getInt(5));
+                    boardVo.setCommentCnt(rs.getInt(6));
+                    boardVo.setPostStatus(rs.getString(7));
+
+                    boardList.add(boardVo);
+                }
+            } else if (opt == 3) {
+                String sqlTitleAndContent = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A where boardCode = ? and title like ? or content like ? order by parent DESC, step ASC";
+                pstm = conn.prepareStatement(sqlTitleAndContent);
+                pstm.setInt(1, bc);
+                pstm.setString(2, "%" + condition + "%");
+                pstm.setString(3, "%" + condition + "%");
+                rs = pstm.executeQuery();
+                while (rs.next()) {
+                    BoardVo boardVo = new BoardVo();
+                    boardVo.setId(rs.getInt(1));
+                    boardVo.setAuthor(rs.getString(2));
+                    boardVo.setTitle(rs.getString(3));
+                    boardVo.setTodate(rs.getDate(4));
+                    boardVo.setIndent(rs.getInt(5));
+                    boardVo.setCommentCnt(rs.getInt(6));
+                    boardVo.setPostStatus(rs.getString(7));
+                    boardList.add(boardVo);
+                }
+            } else if (opt == 4) {
+                String sqlAuthor = "SELECT id, author, title, todate, indent, (SELECT COUNT(*) FROM comment WHERE parent = A.id) AS commentCnt, (SELECT status FROM board WHERE id = A.id) AS postStatus from board A where boardCode = ? and author = ? order by parent DESC, step ASC";
+                pstm = conn.prepareStatement(sqlAuthor);
+                pstm.setInt(1, bc);
+                pstm.setString(2, "%" + condition + "%");
+                rs = pstm.executeQuery();
+                while (rs.next()) {
+                    BoardVo boardVo = new BoardVo();
+                    boardVo.setId(rs.getInt(1));
+                    boardVo.setAuthor(rs.getString(2));
+                    boardVo.setTitle(rs.getString(3));
+                    boardVo.setTodate(rs.getDate(4));
+                    boardVo.setIndent(rs.getInt(5));
+                    boardVo.setCommentCnt(rs.getInt(6));
+                    boardVo.setPostStatus(rs.getString(7));
+                    boardList.add(boardVo);
+                }
             }
-
         } catch (SQLException e) {
             System.out.println(e);
         } finally {

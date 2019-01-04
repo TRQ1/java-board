@@ -8,14 +8,16 @@
 <%@include file="include/common.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%
-    Integer pg = 1;
+    int pg = 1;
     int id = 0;
     int bc = 0;
     int w = 0;
     int d = 0;
+    int opt = 0;
+    String condition = null;
 
-    if(request.getParameter("id") != null) {
-        pg = Integer.parseInt(request.getParameter("id"));
+    if (request.getParameter("id") != null) {
+        id = Integer.parseInt(request.getParameter("id"));
     }
     if(request.getParameter("pg") != null) {
         pg = Integer.parseInt(request.getParameter("pg"));
@@ -29,7 +31,12 @@
     if (request.getParameter("d") != null) {
         d = Integer.parseInt(request.getParameter("d"));
     }
-    System.out.println("bc0 : " + bc);
+    if (request.getParameter("opt") != null){
+        opt = Integer.parseInt(request.getParameter("opt"));
+    }
+    if (request.getParameter("condition") != null){
+        condition = request.getParameter("condition");
+    }
 %>
 <html>
 <head>
@@ -69,12 +76,13 @@
                     </jsp:include>
                 <%
                     } else {
-
                 %>
                 <jsp:include page="sub.jsp">
                     <jsp:param name="bc" value="<%=bc%>" />
                     <jsp:param name="id" value="<%=id%>" />
                     <jsp:param name="pg" value="<%=pg%>"/>
+                    <jsp:param name="opt" value="<%=opt%>"/>
+                    <jsp:param name="condition" value="<%=condition%>"/>
                 </jsp:include>
                 <%
                     }
