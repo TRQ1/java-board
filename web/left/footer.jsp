@@ -42,7 +42,7 @@
     %>
     <tr height="1" bgcolor="#D2D2D2"><td colspan="6"></td></tr>
     <tr height="25" align="center">
-        <td width="200"><a href="../index.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>"/> <%=boardName%></td>
+        <td width="200"><a href="/lists.jsp?id=<%=id%>&pg=<%=pg%>&bc=<%=bc%>"/> <%=boardName%></td>
     </tr>
     <tr height="1" bgcolor="#D2D2D2"><td colspan="6"></td></tr>
     <%

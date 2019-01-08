@@ -1,0 +1,53 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: TRQ1
+  Date: 2018. 9. 18.
+  Time: PM 7:02
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@ page import="java.util.Date" %>
+<%@ page import="utils.PagingUtil" %>
+<%@ page import="utils.CheckLength" %>
+<%@ page import="dao.BoardDao"%>
+<%@ page import="vo.PagingVo" %>
+<%@ page import="vo.BoardVo" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="dao.UserDao" %>
+<%@ include file="include/session.jsp"%>
+<%
+    try {
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>게시판</title>
+</head>
+<body>
+<div id="TOP" style="width:960px;height:150px;">
+</div>
+<table width="960px">
+    <tr>
+        <td width="160" valign="top">
+            <jsp:include page="left.jsp"/>
+        </td>
+        <td width="1000" valign="top">
+            <!-- Content -->
+
+
+
+            <!-- //Content -->
+        </td>
+    </tr>
+</table>
+
+
+
+
+</body>
+</html>
+<%
+    } catch (Exception e) {
+        System.out.println("e: " + e);
+    }
+%>
